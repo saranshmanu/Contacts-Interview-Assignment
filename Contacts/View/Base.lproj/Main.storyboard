@@ -20,7 +20,7 @@
                                 <rect key="frame" x="0.0" y="88" width="414" height="774"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="64" id="PHK-qZ-ekN">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="contactsListIndetifier" rowHeight="64" id="PHK-qZ-ekN" customClass="ContactTableViewCell" customModule="Contacts" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="414" height="64"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="PHK-qZ-ekN" id="s8q-3L-pis">
@@ -59,6 +59,11 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" name="ThemeLightGrey"/>
+                                        <connections>
+                                            <outlet property="favouritesImageView" destination="431-5g-whb" id="52Z-gc-tBr"/>
+                                            <outlet property="profileImageView" destination="gCv-at-ybq" id="YbD-F7-9nV"/>
+                                            <outlet property="profileNameLabel" destination="7Sj-7J-2rC" id="kUk-14-lzd"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
@@ -86,6 +91,9 @@
                             <color key="tintColor" name="ThemeGreen"/>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="tableView" destination="3el-GP-zk7" id="Gy4-Pp-s9l"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
