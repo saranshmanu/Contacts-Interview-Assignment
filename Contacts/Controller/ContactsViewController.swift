@@ -10,9 +10,9 @@ import UIKit
 
 class ContactsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    var contacts = [Contact]()
     var contactsDictionary = [String: [Contact]]()
     var contactsSectionTitles = [String]()
-    var contacts = [Contact]()
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let key = contactsSectionTitles[section]

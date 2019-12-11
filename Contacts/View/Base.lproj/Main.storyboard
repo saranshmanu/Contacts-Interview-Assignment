@@ -19,6 +19,7 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="3el-GP-zk7">
                                 <rect key="frame" x="0.0" y="88" width="414" height="774"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <color key="tintColor" name="ThemeDarkGrey"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="contactsListIndetifier" rowHeight="64" id="PHK-qZ-ekN" customClass="ContactTableViewCell" customModule="Contacts" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="414" height="64"/>
@@ -48,6 +49,8 @@
                                                     </constraints>
                                                 </imageView>
                                             </subviews>
+                                            <color key="backgroundColor" name="ThemeLightGrey"/>
+                                            <color key="tintColor" name="ThemeLightGrey"/>
                                             <constraints>
                                                 <constraint firstAttribute="trailing" secondItem="431-5g-whb" secondAttribute="trailing" constant="32" id="4Nl-jf-BVM"/>
                                                 <constraint firstItem="gCv-at-ybq" firstAttribute="leading" secondItem="s8q-3L-pis" secondAttribute="leading" constant="16" id="OTK-Gj-kPI"/>

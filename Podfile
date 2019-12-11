@@ -6,6 +6,7 @@ target 'Contacts' do
   use_frameworks!
 
   # Pods for Contacts
+pod 'RealmSwift'
 
   target 'ContactsTests' do
     inherit! :search_paths
