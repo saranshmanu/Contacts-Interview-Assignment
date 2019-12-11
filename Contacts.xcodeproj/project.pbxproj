@@ -101,13 +101,10 @@
 		9590B3D123A1223600971DB0 /* Contacts */ = {
 			isa = PBXGroup;
 			children = (
-				9590B3D223A1223600971DB0 /* AppDelegate.swift */,
-				9590B3D423A1223600971DB0 /* SceneDelegate.swift */,
-				9590B3D623A1223600971DB0 /* ViewController.swift */,
-				9590B40223A126C800971DB0 /* NetworkManager.swift */,
-				9590B3D823A1223600971DB0 /* Main.storyboard */,
-				9590B3DB23A1223B00971DB0 /* Assets.xcassets */,
-				9590B3DD23A1223B00971DB0 /* LaunchScreen.storyboard */,
+				9590B40823A14EEC00971DB0 /* Services */,
+				9590B40723A14EC000971DB0 /* Model */,
+				9590B40523A14E2F00971DB0 /* Controller */,
+				9590B40423A14E2800971DB0 /* View */,
 				9590B3E023A1223B00971DB0 /* Info.plist */,
 			);
 			path = Contacts;
@@ -129,6 +126,41 @@
 				9590B3F623A1223B00971DB0 /* Info.plist */,
 			);
 			path = ContactsUITests;
+			sourceTree = "<group>";
+		};
+		9590B40423A14E2800971DB0 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				9590B3DD23A1223B00971DB0 /* LaunchScreen.storyboard */,
+				9590B3D823A1223600971DB0 /* Main.storyboard */,
+				9590B3DB23A1223B00971DB0 /* Assets.xcassets */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		9590B40523A14E2F00971DB0 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				9590B3D223A1223600971DB0 /* AppDelegate.swift */,
+				9590B3D423A1223600971DB0 /* SceneDelegate.swift */,
+				9590B3D623A1223600971DB0 /* ViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		9590B40723A14EC000971DB0 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		9590B40823A14EEC00971DB0 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				9590B40223A126C800971DB0 /* NetworkManager.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -441,7 +473,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = JCRFV5ZL52;
 				INFOPLIST_FILE = Contacts/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -460,7 +492,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = JCRFV5ZL52;
 				INFOPLIST_FILE = Contacts/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
