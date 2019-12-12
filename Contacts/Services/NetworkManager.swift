@@ -12,31 +12,26 @@ import Alamofire
 // the Network Handler class manages the network request for GET and POST requests
 class NetworkManager {
     
-    // list of all the services that are available with the
-    var contactUUID: Int?
-    enum Service: String {
-        case getContact = "contacts.json"
-        case getContactDetails = "contacts/"
-    }
-    
-    // base URL for the server
-    private func serverBaseURL() -> String? { return "https://gojek-contacts-app.herokuapp.com/" }
+    var uuid: Int?
     
     private func getURL(service: Service) -> URL {
-        var urlString = serverBaseURL()! + service.rawValue
+        var urlString = NetworkRouter().serverBaseURL() + NetworkRouter().getNetworkRoute(service: service)
         if service == .getContactDetails {
-            urlString.append("\(contactUUID ?? 0)" + ".json")
+            urlString.append("\(uuid ?? 0)" + ".json")
         }
         let url = URL(string: urlString)
         return url!
     }
     
     // network request to handle the error and other network parameters
-    public func request(service: Service, method: HTTPMethod, header: HTTPHeaders, parameters: Parameters, completion: @escaping (Bool, Any?) -> ()) {
+    public func request(service: Service, header: HTTPHeaders? = [:], parameters: Parameters? = [:], completion: @escaping (Bool, Any?) -> ()) {
         let url = getURL(service: service)
-        print(url)
-        Alamofire.request(url, method: method, parameters: parameters, headers: header).responseJSON { response in
-            switch response.result {
+        let method: HTTPMethod = HTTPMethod(rawValue: NetworkRouter().getNetworkRoute(service: service)) ?? .get
+        Alamofire.request(
+            url, method: method,
+            parameters: parameters,
+            headers: header).responseJSON { response in
+                switch response.result {
             case .success(_) :
                 let result = response.result.value as Any
                 completion(false, result)
