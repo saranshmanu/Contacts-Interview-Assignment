@@ -55,6 +55,12 @@ class ContactsResultService {
         return contacts
     }
     
+    func getData(with uuid: Int) -> Contact {
+        let realm = try! Realm()
+        let query = realm.objects(Contact.self).filter("uuid == \(uuid)").first!
+        return query
+    }
+    
     func saveData(contactList: [Contact]) {
         // using realm to update the database
         let realm = try! Realm()

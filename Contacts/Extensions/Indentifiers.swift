@@ -10,4 +10,6 @@ import Foundation
 
 class Identifiers {
     public static var contactList = "contactsListIndetifier"
+    public static var contactsDetailsHeaderTableViewCellIdentifier = "contactsDetailsHeaderTableViewCellIndentifier"
+    public static var contactsDetailsFieldTableViewCellIdentifier = "contactsDetailsFieldTableViewCellIndentifier"
 }

@@ -17,6 +17,7 @@ class ContactsViewController: UIViewController, ContactsResultServiceDelegate {
     var contacts = [Contact]()
     var contactsDictionary = [String: [Contact]]()
     var contactsSectionTitles = [String]()
+    var selectedUUID: Int = 0
     
     func initTableView() {
         tableView.delegate = self
@@ -58,6 +59,13 @@ class ContactsViewController: UIViewController, ContactsResultServiceDelegate {
         reloadTableView()
         contactsResultService?.updateData()
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if(segue.identifier == "ContactsDetailsSegue") {
+                let contactsDetailsViewController = segue.destination as! ContactsDetailsViewController
+            contactsDetailsViewController.uuid = selectedUUID
+        }
+    }
 }
 
 extension ContactsViewController: UITableViewDelegate, UITableViewDataSource {
@@ -74,10 +82,10 @@ extension ContactsViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let contactCell = tableView.dequeueReusableCell(withIdentifier: Identifiers.contactList, for: indexPath) as! ContactTableViewCell
+        let contactCell = tableView.dequeueReusableCell(withIdentifier: Identifiers.contactList, for: indexPath) as! ContactsTableViewCell
         let flag = contactsSectionTitles[indexPath.section]
         let contacts: [Contact] = contactsDictionary[flag]!
-        contactCell.initData(contact: contacts[indexPath.row])
+        contactCell.configure(contact: contacts[indexPath.row])
         return contactCell
     }
     
@@ -86,7 +94,11 @@ extension ContactsViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let flag = contactsSectionTitles[indexPath.section]
+        let contacts: [Contact] = contactsDictionary[flag]!
+        selectedUUID = contacts[indexPath.row].uuid
         tableView.deselectRow(at: indexPath, animated: true)
+        self.performSegue(withIdentifier: "ContactsDetailsSegue", sender: self)
     }
     
     func sectionIndexTitles(for tableView: UITableView) -> [String]? {

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="mcY-dH-3BX">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="mcY-dH-3BX">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -21,7 +21,7 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <color key="tintColor" name="ThemeDarkGrey"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="contactsListIndetifier" rowHeight="64" id="PHK-qZ-ekN" customClass="ContactTableViewCell" customModule="Contacts" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="contactsListIndetifier" rowHeight="64" id="PHK-qZ-ekN" customClass="ContactsTableViewCell" customModule="Contacts" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="414" height="64"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="PHK-qZ-ekN" id="s8q-3L-pis">
@@ -96,7 +96,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="3el-GP-zk7" id="Gy4-Pp-s9l"/>
-                        <segue destination="hDc-zc-6HF" kind="show" id="nJT-dU-y5J"/>
+                        <segue destination="hDc-zc-6HF" kind="show" identifier="ContactsDetailsSegue" id="nJT-dU-y5J"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -111,11 +111,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="LLC-9v-nUP">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="LLC-9v-nUP">
                                 <rect key="frame" x="0.0" y="88" width="414" height="774"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="327" id="wSJ-hh-D1Y">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="contactsDetailsHeaderTableViewCellIndentifier" rowHeight="327" id="wSJ-hh-D1Y" customClass="ContactsDetailsHeaderTableViewCell" customModule="Contacts" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="414" height="327"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="wSJ-hh-D1Y" id="wkD-Y9-akH">
@@ -149,11 +149,14 @@
                                                             </view>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Saransh Mittal" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="83n-sG-Jea">
                                                                 <rect key="frame" x="132.5" y="188" width="149" height="26.5"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="26.5" id="WRA-CO-Zw1"/>
+                                                                </constraints>
                                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
                                                                 <color key="textColor" name="ThemeDarkGrey"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="top" spacing="26" translatesAutoresizingMaskIntoConstraints="NO" id="z3h-cC-Pq1">
+                                                            <stackView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" distribution="fillEqually" alignment="top" spacing="26" translatesAutoresizingMaskIntoConstraints="NO" id="z3h-cC-Pq1">
                                                                 <rect key="frame" x="40" y="238.5" width="334" height="69"/>
                                                                 <subviews>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="3a6-zd-I8I">
@@ -167,6 +170,9 @@
                                                                                 <state key="normal" image="message_button">
                                                                                     <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                                                                 </state>
+                                                                                <connections>
+                                                                                    <action selector="message:" destination="wSJ-hh-D1Y" eventType="touchUpInside" id="pBU-UC-jLa"/>
+                                                                                </connections>
                                                                             </button>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="message" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OAh-OV-9Vn">
                                                                                 <rect key="frame" x="0.0" y="52" width="64" height="17"/>
@@ -187,6 +193,9 @@
                                                                                 <state key="normal" image="call_button">
                                                                                     <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                                                                 </state>
+                                                                                <connections>
+                                                                                    <action selector="call:" destination="wSJ-hh-D1Y" eventType="touchUpInside" id="NHR-OV-Ovz"/>
+                                                                                </connections>
                                                                             </button>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="call" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dD4-kJ-jJE">
                                                                                 <rect key="frame" x="0.0" y="52" width="64" height="17"/>
@@ -207,6 +216,9 @@
                                                                                 <state key="normal" image="email_button">
                                                                                     <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                                                                 </state>
+                                                                                <connections>
+                                                                                    <action selector="email:" destination="wSJ-hh-D1Y" eventType="touchUpInside" id="7S0-Li-fc2"/>
+                                                                                </connections>
                                                                             </button>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="email" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="viv-y2-7zb">
                                                                                 <rect key="frame" x="0.0" y="52" width="64" height="17"/>
@@ -227,6 +239,9 @@
                                                                                 <state key="normal" image="favourite_button">
                                                                                     <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                                                                 </state>
+                                                                                <connections>
+                                                                                    <action selector="favourite:" destination="wSJ-hh-D1Y" eventType="touchUpInside" id="FpN-ef-8gX"/>
+                                                                                </connections>
                                                                             </button>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="favourites" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IHT-ht-BuD">
                                                                                 <rect key="frame" x="0.0" y="52" width="64" height="17"/>
@@ -237,6 +252,9 @@
                                                                         </subviews>
                                                                     </stackView>
                                                                 </subviews>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="69" id="ZjA-XQ-OjO"/>
+                                                                </constraints>
                                                             </stackView>
                                                         </subviews>
                                                         <constraints>
@@ -264,8 +282,15 @@
                                                 <constraint firstAttribute="trailing" secondItem="DzD-31-woe" secondAttribute="trailing" id="xtA-BC-gsW"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="moreContactInformationHeightConstraint" destination="ZjA-XQ-OjO" id="gfI-K8-aZF"/>
+                                            <outlet property="moreContactInformationView" destination="z3h-cC-Pq1" id="Aw4-7Y-Ai8"/>
+                                            <outlet property="profileImageBackgroundView" destination="4JA-ES-q3r" id="gn4-sK-RKZ"/>
+                                            <outlet property="profileImageView" destination="YDK-Io-Rcz" id="lIu-o9-hc9"/>
+                                            <outlet property="profileUserNameLabel" destination="83n-sG-Jea" id="ilc-Uo-Ezc"/>
+                                        </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="56" id="QXt-Ta-xNE">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="contactsDetailsFieldTableViewCellIndentifier" rowHeight="56" id="QXt-Ta-xNE" customClass="ContactsDetailsFieldTableViewCell" customModule="Contacts" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="355" width="414" height="56"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="QXt-Ta-xNE" id="xMp-Aj-35t">
@@ -301,6 +326,10 @@
                                                 <constraint firstItem="XTI-zK-2yd" firstAttribute="centerY" secondItem="xMp-Aj-35t" secondAttribute="centerY" id="xah-j5-tzZ"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="detailTextField" destination="Szf-Sf-V6v" id="ANU-AG-nWC"/>
+                                            <outlet property="detailTypeLabel" destination="XTI-zK-2yd" id="Wcf-82-RuM"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
@@ -315,8 +344,16 @@
                         <viewLayoutGuide key="safeArea" id="zbN-Qy-ClS"/>
                     </view>
                     <navigationItem key="navigationItem" id="dPI-3m-5Kr">
-                        <barButtonItem key="rightBarButtonItem" title="Edit" id="csq-0W-5nf"/>
+                        <barButtonItem key="rightBarButtonItem" title="Edit" id="csq-0W-5nf">
+                            <connections>
+                                <action selector="editDetailsAction:" destination="hDc-zc-6HF" id="bQw-t8-KLP"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="editDetailsButton" destination="csq-0W-5nf" id="oyH-vp-b9H"/>
+                        <outlet property="tableView" destination="LLC-9v-nUP" id="L0b-1N-NCs"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ufi-yW-K6E" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

@@ -1,5 +1,5 @@
 //
-//  ContactTableViewCell.swift
+//  ContactsTableViewCell.swift
 //  Contacts
 //
 //  Created by Saransh Mittal on 11/12/19.
@@ -8,13 +8,13 @@
 
 import UIKit
 
-class ContactTableViewCell: UITableViewCell {
+class ContactsTableViewCell: UITableViewCell {
 
     @IBOutlet weak var favouritesImageView: UIImageView!
     @IBOutlet weak var profileNameLabel: UILabel!
     @IBOutlet weak var profileImageView: UIImageView!
     
-    func initData(contact: Contact) {
+    func configure(contact: Contact) {
         profileNameLabel.text = contact.firstName + " " + contact.lastName
 //        profileImageView.image = contact.profileImage?.image
         favouritesImageView.isHidden = !contact.isFavourite
@@ -22,13 +22,11 @@ class ContactTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
         profileImageView.layer.cornerRadius = profileImageView.frame.height / 2
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-        // Configure the view for the selected state
     }
 
 }
