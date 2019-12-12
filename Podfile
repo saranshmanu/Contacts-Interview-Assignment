@@ -7,6 +7,7 @@ target 'Contacts' do
 
   # Pods for Contacts
 pod 'RealmSwift'
+pod 'Alamofire', '~> 4.0'
 
   target 'ContactsTests' do
     inherit! :search_paths

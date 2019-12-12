@@ -51,34 +51,6 @@ class ContactsViewController: UIViewController, UITableViewDelegate, UITableView
         tableView.dataSource = self
     }
     
-    func addModelData() {
-        contacts.append(Contact(uuid: "a2sj471", firstName: "Saransh", lastName: "Mittal", phoneNumber: 9910749550, isFavourite: true, email: "saranshmanu@yahoo.co.in", profileImage: UIImageView.init()))
-        contacts.append(Contact(uuid: "a2sj471", firstName: "Arvind", lastName: "Mittal", phoneNumber: 9910749550, isFavourite: true, email: "saranshmanu@yahoo.co.in", profileImage: UIImageView.init()))
-        contacts.append(Contact(uuid: "a2sj471", firstName: "Arti", lastName: "Mittal", phoneNumber: 9910749550, isFavourite: true, email: "saranshmanu@yahoo.co.in", profileImage: UIImageView.init()))
-        contacts.append(Contact(uuid: "a2sj471", firstName: "Ananya", lastName: "Mittal", phoneNumber: 9910749550, isFavourite: true, email: "saranshmanu@yahoo.co.in", profileImage: UIImageView.init()))
-        contacts.append(Contact(uuid: "a2sj471", firstName: "Raghav", lastName: "Gupta", phoneNumber: 9910749550, isFavourite: true, email: "saranshmanu@yahoo.co.in", profileImage: UIImageView.init()))
-        contacts.append(Contact(uuid: "a2sj471", firstName: "Saransh", lastName: "Mittal", phoneNumber: 9910749550, isFavourite: true, email: "saranshmanu@yahoo.co.in", profileImage: UIImageView.init()))
-        contacts.append(Contact(uuid: "a2sj471", firstName: "Arvind", lastName: "Mittal", phoneNumber: 9910749550, isFavourite: true, email: "saranshmanu@yahoo.co.in", profileImage: UIImageView.init()))
-        contacts.append(Contact(uuid: "a2sj471", firstName: "Arti", lastName: "Mittal", phoneNumber: 9910749550, isFavourite: true, email: "saranshmanu@yahoo.co.in", profileImage: UIImageView.init()))
-        contacts.append(Contact(uuid: "a2sj471", firstName: "Ananya", lastName: "Mittal", phoneNumber: 9910749550, isFavourite: true, email: "saranshmanu@yahoo.co.in", profileImage: UIImageView.init()))
-        contacts.append(Contact(uuid: "a2sj471", firstName: "Raghav", lastName: "Gupta", phoneNumber: 9910749550, isFavourite: true, email: "saranshmanu@yahoo.co.in", profileImage: UIImageView.init()))
-        contacts.append(Contact(uuid: "a2sj471", firstName: "Saransh", lastName: "Mittal", phoneNumber: 9910749550, isFavourite: true, email: "saranshmanu@yahoo.co.in", profileImage: UIImageView.init()))
-        contacts.append(Contact(uuid: "a2sj471", firstName: "Arvind", lastName: "Mittal", phoneNumber: 9910749550, isFavourite: true, email: "saranshmanu@yahoo.co.in", profileImage: UIImageView.init()))
-        contacts.append(Contact(uuid: "a2sj471", firstName: "Arti", lastName: "Mittal", phoneNumber: 9910749550, isFavourite: true, email: "saranshmanu@yahoo.co.in", profileImage: UIImageView.init()))
-        contacts.append(Contact(uuid: "a2sj471", firstName: "Ananya", lastName: "Mittal", phoneNumber: 9910749550, isFavourite: true, email: "saranshmanu@yahoo.co.in", profileImage: UIImageView.init()))
-        contacts.append(Contact(uuid: "a2sj471", firstName: "Raghav", lastName: "Gupta", phoneNumber: 9910749550, isFavourite: true, email: "saranshmanu@yahoo.co.in", profileImage: UIImageView.init()))
-        contacts.append(Contact(uuid: "a2sj471", firstName: "Saransh", lastName: "Mittal", phoneNumber: 9910749550, isFavourite: true, email: "saranshmanu@yahoo.co.in", profileImage: UIImageView.init()))
-        contacts.append(Contact(uuid: "a2sj471", firstName: "Arvind", lastName: "Mittal", phoneNumber: 9910749550, isFavourite: true, email: "saranshmanu@yahoo.co.in", profileImage: UIImageView.init()))
-        contacts.append(Contact(uuid: "a2sj471", firstName: "Arti", lastName: "Mittal", phoneNumber: 9910749550, isFavourite: true, email: "saranshmanu@yahoo.co.in", profileImage: UIImageView.init()))
-        contacts.append(Contact(uuid: "a2sj471", firstName: "Ananya", lastName: "Mittal", phoneNumber: 9910749550, isFavourite: true, email: "saranshmanu@yahoo.co.in", profileImage: UIImageView.init()))
-        contacts.append(Contact(uuid: "a2sj471", firstName: "Raghav", lastName: "Gupta", phoneNumber: 9910749550, isFavourite: true, email: "saranshmanu@yahoo.co.in", profileImage: UIImageView.init()))
-        contacts.append(Contact(uuid: "a2sj471", firstName: "Sarthak", lastName: "Mittal", phoneNumber: 9910749550, isFavourite: true, email: "saranshmanu@yahoo.co.in", profileImage: UIImageView.init()))
-        contacts.append(Contact(uuid: "a2sj471", firstName: "Arvind", lastName: "Mittal", phoneNumber: 9910749550, isFavourite: true, email: "saranshmanu@yahoo.co.in", profileImage: UIImageView.init()))
-        contacts.append(Contact(uuid: "a2sj471", firstName: "Arti", lastName: "Mittal", phoneNumber: 9910749550, isFavourite: true, email: "saranshmanu@yahoo.co.in", profileImage: UIImageView.init()))
-        contacts.append(Contact(uuid: "a2sj471", firstName: "Ananya", lastName: "Mittal", phoneNumber: 9910749550, isFavourite: true, email: "saranshmanu@yahoo.co.in", profileImage: UIImageView.init()))
-        contacts.append(Contact(uuid: "a2sj471", firstName: "Keshav", lastName: "Gupta", phoneNumber: 9910749550, isFavourite: true, email: "saranshmanu@yahoo.co.in", profileImage: UIImageView.init()))
-    }
-    
     func createTableSectionIndex() {
         for contact in contacts {
             let flag = String(contact.firstName.prefix(1))
@@ -97,8 +69,14 @@ class ContactsViewController: UIViewController, UITableViewDelegate, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
         initTableView()
-        addModelData()
         createTableSectionIndex()
+        ContactsResultService().call() { (error, result) in
+            if error == false {
+                print("Error while printing the result")
+            } else {
+                print(result)
+            }
+        }
     }
 
 }
