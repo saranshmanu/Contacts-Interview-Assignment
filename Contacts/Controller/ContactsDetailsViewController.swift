@@ -23,11 +23,13 @@ class ContactsDetailsViewController: UIViewController {
             case .normal:
                     mode = .editing
                     editDetailsButton.title = "Done"
+                    tableView.reloadSections(IndexSet(arrayLiteral: 0), with: .fade)
             case .editing:
                 if newContactInformation!.checkInvalidTextFields().isEmpty {
                     updateContactInformation()
                     mode = .normal
                     editDetailsButton.title = "Edit"
+                    tableView.reloadSections(IndexSet(arrayLiteral: 0), with: .fade)
                 } else {
                     alertForInvalidTextFields()
                     break
@@ -37,12 +39,12 @@ class ContactsDetailsViewController: UIViewController {
                     saveContactInformation()
                     mode = .normal
                     editDetailsButton.isEnabled = false
+                    tableView.reloadSections(IndexSet(arrayLiteral: 0), with: .fade)
                 } else {
                     alertForInvalidTextFields()
                     break
                 }
         }
-        tableView.reloadSections(IndexSet(arrayLiteral: 0), with: .fade)
     }
     
     func initDataFields() {
@@ -263,21 +265,13 @@ extension ContactsDetailsViewController: ContactsDetailsHeaderTableViewCellDeleg
 extension ContactsDetailsViewController: ContactsDetailsFieldTableViewCellDelegate {
     
     func saveContactInformation() {
-        ContactAPINetworkService().createContactDetails(data: newContactInformation!, completion: { (response) in
-            if let _: Contact = response as? Contact {
-                // successfully created contact
-            }
-        })
+        ContactAPINetworkService().createContactDetails(data: newContactInformation!, completion: { (response) in })
         self.contact = newContactInformation!
         initDataFields()
     }
     
     func updateContactInformation() {
-        ContactAPINetworkService().updateContactDetails(with: newContactInformation!.uuid, data: newContactInformation!, completion: { (response) in
-            if let _: Contact = response as? Contact {
-                // successfully updated contact
-            }
-        })
+        ContactAPINetworkService().updateContactDetails(with: newContactInformation!.uuid, data: newContactInformation!, completion: { (response) in })
         contact = ContactAPINetworkService().getData(with: contact!.uuid)
         initDataFields()
     }
