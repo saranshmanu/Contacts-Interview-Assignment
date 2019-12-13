@@ -1,6 +1,6 @@
 //
-//  ContactsTests.swift
-//  ContactsTests
+//  NetworkManagerTests.swift
+//  NetworkManagerTests
 //
 //  Created by Saransh Mittal on 11/12/19.
 //  Copyright © 2019 Saransh Mittal. All rights reserved.
@@ -157,7 +157,6 @@ class NetworkManagerTests: XCTestCase {
     }
 
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
 }

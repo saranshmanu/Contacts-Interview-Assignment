@@ -14,6 +14,7 @@
 		9529A69023A353F0002224D9 /* logs.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9529A68F23A353F0002224D9 /* logs.txt */; };
 		9529A69223A3A185002224D9 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9529A69123A3A184002224D9 /* StringExtension.swift */; };
 		9529A69723A3BBF5002224D9 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9529A69623A3BBF5002224D9 /* UIViewControllerExtension.swift */; };
+		9529A69923A41A62002224D9 /* ContactModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9529A69823A41A62002224D9 /* ContactModelTests.swift */; };
 		95889B0423A18668003E2348 /* ContactAPINetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95889B0323A18668003E2348 /* ContactAPINetworkService.swift */; };
 		95889B0623A22684003E2348 /* NetworkRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95889B0523A22684003E2348 /* NetworkRouter.swift */; };
 		95889B0A23A26416003E2348 /* ContactsDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95889B0923A26416003E2348 /* ContactsDetailsViewController.swift */; };
@@ -25,7 +26,7 @@
 		9590B3DA23A1223600971DB0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9590B3D823A1223600971DB0 /* Main.storyboard */; };
 		9590B3DC23A1223B00971DB0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9590B3DB23A1223B00971DB0 /* Assets.xcassets */; };
 		9590B3DF23A1223B00971DB0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9590B3DD23A1223B00971DB0 /* LaunchScreen.storyboard */; };
-		9590B3EA23A1223B00971DB0 /* ContactsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9590B3E923A1223B00971DB0 /* ContactsTests.swift */; };
+		9590B3EA23A1223B00971DB0 /* NetworkManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9590B3E923A1223B00971DB0 /* NetworkManagerTests.swift */; };
 		9590B3F523A1223B00971DB0 /* ContactsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9590B3F423A1223B00971DB0 /* ContactsUITests.swift */; };
 		9590B40323A126C800971DB0 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9590B40223A126C800971DB0 /* NetworkManager.swift */; };
 		9590B40D23A151CE00971DB0 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9590B40C23A151CE00971DB0 /* Colors.xcassets */; };
@@ -63,6 +64,7 @@
 		9529A68F23A353F0002224D9 /* logs.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = logs.txt; sourceTree = "<group>"; };
 		9529A69123A3A184002224D9 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		9529A69623A3BBF5002224D9 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
+		9529A69823A41A62002224D9 /* ContactModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactModelTests.swift; sourceTree = "<group>"; };
 		95889B0323A18668003E2348 /* ContactAPINetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactAPINetworkService.swift; sourceTree = "<group>"; };
 		95889B0523A22684003E2348 /* NetworkRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkRouter.swift; sourceTree = "<group>"; };
 		95889B0923A26416003E2348 /* ContactsDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsDetailsViewController.swift; sourceTree = "<group>"; };
@@ -77,7 +79,7 @@
 		9590B3DE23A1223B00971DB0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9590B3E023A1223B00971DB0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9590B3E523A1223B00971DB0 /* ContactsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ContactsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		9590B3E923A1223B00971DB0 /* ContactsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsTests.swift; sourceTree = "<group>"; };
+		9590B3E923A1223B00971DB0 /* NetworkManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManagerTests.swift; sourceTree = "<group>"; };
 		9590B3EB23A1223B00971DB0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9590B3F023A1223B00971DB0 /* ContactsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ContactsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9590B3F423A1223B00971DB0 /* ContactsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsUITests.swift; sourceTree = "<group>"; };
@@ -208,7 +210,8 @@
 		9590B3E823A1223B00971DB0 /* ContactsTests */ = {
 			isa = PBXGroup;
 			children = (
-				9590B3E923A1223B00971DB0 /* ContactsTests.swift */,
+				9529A69823A41A62002224D9 /* ContactModelTests.swift */,
+				9590B3E923A1223B00971DB0 /* NetworkManagerTests.swift */,
 				9590B3EB23A1223B00971DB0 /* Info.plist */,
 			);
 			path = ContactsTests;
@@ -533,7 +536,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9590B3EA23A1223B00971DB0 /* ContactsTests.swift in Sources */,
+				9529A69923A41A62002224D9 /* ContactModelTests.swift in Sources */,
+				9590B3EA23A1223B00971DB0 /* NetworkManagerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

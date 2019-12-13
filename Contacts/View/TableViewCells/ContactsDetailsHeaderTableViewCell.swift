@@ -28,7 +28,6 @@ class ContactsDetailsHeaderTableViewCell: UITableViewCell {
     @IBOutlet weak var profileUserNameLabel: UILabel!
     @IBOutlet weak var profileImageBackgroundView: UIView!
     @IBOutlet weak var profileImageView: UIImageView!
-    
     var delegate: ContactsDetailsHeaderTableViewCellDelegate?
     
     @IBAction func favourite(_ sender: Any) {
@@ -37,12 +36,15 @@ class ContactsDetailsHeaderTableViewCell: UITableViewCell {
             (favoriteButton.isSelected = true)
         delegate?.performActivity(activity: .favourite)
     }
+    
     @IBAction func email(_ sender: Any) {
         delegate?.performActivity(activity: .email)
     }
+    
     @IBAction func call(_ sender: Any) {
         delegate?.performActivity(activity: .call)
     }
+    
     @IBAction func message(_ sender: Any) {
         delegate?.performActivity(activity: .message)
     }

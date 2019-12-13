@@ -24,7 +24,7 @@ class ContactsDetailsViewController: UIViewController {
                     mode = .editing
                     editDetailsButton.title = "Done"
             case .editing:
-                if checkFields().isEmpty {
+                if newContactInformation!.checkInvalidTextFields().isEmpty {
                     updateContactInformation()
                     mode = .normal
                     editDetailsButton.title = "Edit"
@@ -33,7 +33,7 @@ class ContactsDetailsViewController: UIViewController {
                     break
                 }
             case .adding:
-                if checkFields().isEmpty {
+                if newContactInformation!.checkInvalidTextFields().isEmpty {
                     saveContactInformation()
                     mode = .normal
                     editDetailsButton.isEnabled = false
@@ -52,30 +52,12 @@ class ContactsDetailsViewController: UIViewController {
     }
     
     func alertForInvalidTextFields() {
-        let codes = checkFields()
+        let codes: [Contact.InvalidTextFieldCode] = newContactInformation!.checkInvalidTextFields()
         var message = ""
         for i in 0..<codes.count {
             message += "\(i+1)) \(codes[i].rawValue)\n"
         }
         showAlert(title: "Error", message: message)
-    }
-    
-    enum InvalidTextFieldCode: String {
-        case firstNameEmpty = "First name cannot be left blank"
-        case lastNameEmpty = "Last name cannot be left blank"
-        case firstNameShort = "First name is too short (minimum is 2 characters)"
-        case lastNameShort = "Last name is too short (minimum is 2 characters)"
-        case emailFormatInvalid = "Invalid email address"
-        case phoneNumberFormatInvalid = "Invalid phone number"
-    }
-    
-    func checkFields() -> [InvalidTextFieldCode] {
-        var codes = [InvalidTextFieldCode]()
-        (newContactInformation?.lastName.isEmpty)! ? codes.append(.firstNameEmpty) : (newContactInformation?.firstName.count)! < 2 ? codes.append(.firstNameShort) : ()
-        (newContactInformation?.firstName.isEmpty)! ? codes.append(.lastNameEmpty) : (newContactInformation?.lastName.count)! < 2 ? codes.append(.lastNameShort) : ()
-        !(newContactInformation?.email.isEmpty)! && !(newContactInformation?.email.isValidEmail)! ? codes.append(.emailFormatInvalid) : ()
-        !(newContactInformation?.phoneNumber.isEmpty)! && !(newContactInformation?.phoneNumber.isValidContact)! ? codes.append(.phoneNumberFormatInvalid) : ()
-        return codes
     }
     
     func initDataFields() {
@@ -145,7 +127,7 @@ class ContactsDetailsViewController: UIViewController {
     @objc func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             if self.view.frame.origin.y == 0 {
-                self.view.frame.origin.y -= keyboardSize.height
+                self.view.frame.origin.y -= (keyboardSize.height - 50)
             }
         }
     }
@@ -217,7 +199,6 @@ extension ContactsDetailsViewController: ContactsDetailsHeaderTableViewCellDeleg
             guard let number = URL(string: "tel://" + contact!.phoneNumber) else { return }
             UIApplication.shared.open(number)
         case .email:
-            // checking if we can send the email throught the application
             if (contact?.email.isEmpty)! {
                 self.showAlert(title: "Alert", message: "No email address found. Cannot send the message.")
             }
@@ -229,10 +210,8 @@ extension ContactsDetailsViewController: ContactsDetailsHeaderTableViewCellDeleg
                 present(mail, animated: true)
             } else {
                 // cannot send the email
-                print("Cannot send email")
             }
         case .message:
-            // checking if we can send the message throught the application
             if (contact?.phoneNumber.isEmpty)! {
                 self.showAlert(title: "Alert", message: "No phone number found. Cannot send the message.")
             }
@@ -245,7 +224,6 @@ extension ContactsDetailsViewController: ContactsDetailsHeaderTableViewCellDeleg
             }
             else{
                 // cannot send the message
-                print("Cannot send message")
             }
         case .refresh:
             UIView.animate(withDuration: 1) {
