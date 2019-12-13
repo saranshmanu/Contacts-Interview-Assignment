@@ -8,15 +8,26 @@
 
 import UIKit
 
-class ContactsDetailsFieldTableViewCell: UITableViewCell {
+protocol ContactsDetailsFieldTableViewCellDelegate {
+    func updateChangedValue(data: String, type: String)
+}
+
+class ContactsDetailsFieldTableViewCell: UITableViewCell, UITextFieldDelegate {
 
     @IBOutlet weak var detailTypeLabel: UILabel!
     @IBOutlet weak var detailTextField: UITextField!
+    var delegate: ContactsDetailsFieldTableViewCellDelegate?
+    
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        let type: String = detailTypeLabel.text!
+        let data: String = detailTextField.text!
+        delegate?.updateChangedValue(data: data, type: type)
+    }
     
     func configure(type: String, data: String, mode: ContactsDetailsMode) {
         detailTextField.text = data
         detailTypeLabel.text = type
-        if mode == .viewing {
+        if mode == .normal {
             detailTextField.isUserInteractionEnabled = false
             detailTypeLabel.isUserInteractionEnabled = false
         } else {
@@ -28,6 +39,7 @@ class ContactsDetailsFieldTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        detailTextField.delegate = self
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

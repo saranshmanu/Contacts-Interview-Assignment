@@ -16,8 +16,8 @@ class ContactsTableViewCell: UITableViewCell {
     
     func configure(contact: Contact) {
         profileNameLabel.text = contact.firstName + " " + contact.lastName
-//        profileImageView.image = contact.profileImage?.image
         favouritesImageView.isHidden = !contact.isFavourite
+//        profileImageView.image = contact.profileImage?.image
     }
     
     override func awakeFromNib() {

@@ -14,6 +14,10 @@ class ContactsViewController: UIViewController, ContactsResultServiceDelegate {
         reloadTableView()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        refresh()
+    }
+    
     var contacts = [Contact]()
     var contactsDictionary = [String: [Contact]]()
     var contactsSectionTitles = [String]()
@@ -57,7 +61,7 @@ class ContactsViewController: UIViewController, ContactsResultServiceDelegate {
         initContactsResultService()
         initTableView()
         reloadTableView()
-        contactsResultService?.updateData()
+        contactsResultService?.refreshData()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

@@ -16,33 +16,81 @@ protocol ContactsResultServiceDelegate {
 
 class ContactsResultService {
     
+    enum NetworkStatus: String {
+        case starting = "starting"
+        case completed = "completed"
+    }
+
+    static var contactUpdateBuffer = [Contact]()
     public var delegate: ContactsResultServiceDelegate?
+    static var refreshStatus: NetworkStatus = .completed {
+        didSet {
+            if refreshStatus == .completed {
+                if !contactUpdateBuffer.isEmpty {
+                    let updatedContacts = ContactsResultService.contactUpdateBuffer
+                    for flag in updatedContacts {
+                        ContactsResultService().updateContactDetails(data: flag)
+                    }
+                }
+            }
+        }
+    }
     
-    func updateData() {
+    
+    func getRealmFileDirectory() {
+        let realm = try! Realm()
+        let folderPath = realm.configuration.fileURL!.deletingLastPathComponent().path
+        print(folderPath)
+    }
+    
+    func refreshData() {
+        ContactsResultService.refreshStatus = .starting
         NetworkManager().request(service: .getContact) { (error, result) in
             if let data: [NSDictionary] = result as? [NSDictionary] {
                 // starting the process to get all contact details
                 self.parseContactList(result: data) { result in
                     let contactList = result as! [Contact]
                     self.saveData(contactList: contactList)
+                    ContactsResultService.refreshStatus = .completed
                     self.delegate?.refresh()
                 }
             } else {
                 // failed to update the contact list
+                ContactsResultService.refreshStatus = .completed
             }
         }
     }
     
-    func postData() {
-        NetworkManager().request(service: .getContactDetails, parameters: [:]) { (error, result) in
+    func getContactDetails(uuid: Int, completion: @escaping (Bool, Any?) -> ()) {
+        let server = NetworkManager()
+        server.uuid = uuid
+        server.request(service: .getContactDetails) { (error, result) in
+            if let data: NSDictionary = result as? NSDictionary {
+                completion(false, data)
+            } else {
+                completion(true, nil)
+            }
         }
     }
     
-    func getRealmFileDirectory() {
-        // Get the Realm file's parent directory
+    func updateData(with uuid: Int, data: Contact) {
         let realm = try! Realm()
-        let folderPath = realm.configuration.fileURL!.deletingLastPathComponent().path
-        print(folderPath)
+        let query = realm.objects(Contact.self).filter("uuid == \(uuid)").first
+        try! realm.write {
+            query?.firstName = data.firstName
+            query?.lastName = data.lastName
+            query?.email = data.email
+            query?.phoneNumber = data.phoneNumber
+        }
+        if ContactsResultService.refreshStatus == .starting {
+            ContactsResultService.contactUpdateBuffer.append(data)
+        } else {
+            updateContactDetails(data: data)
+        }
+    }
+    
+    func updateContactDetails(data: Contact) {
+        print("Updated the data on the server with uuid: \(data.uuid)")
     }
     
     func getData() -> [Contact] {
@@ -62,11 +110,10 @@ class ContactsResultService {
     }
     
     func saveData(contactList: [Contact]) {
-        // using realm to update the database
         let realm = try! Realm()
         try! realm.write {
             for contact in contactList {
-                realm.add(contact)
+                realm.create(Contact.self, value: contact, update: .modified)
             }
         }
     }
@@ -115,18 +162,6 @@ class ContactsResultService {
                 completion(flag)
             } else {
                 completion(nil)
-            }
-        }
-    }
-    
-    func getContactDetails(uuid: Int, completion: @escaping (Bool, Any?) -> ()) {
-        let server = NetworkManager()
-        server.uuid = uuid
-        server.request(service: .getContactDetails) { (error, result) in
-            if let data: NSDictionary = result as? NSDictionary {
-                completion(false, data)
-            } else {
-                completion(true, nil)
             }
         }
     }

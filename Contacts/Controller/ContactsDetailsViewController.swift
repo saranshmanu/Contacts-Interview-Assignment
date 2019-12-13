@@ -10,7 +10,7 @@ import UIKit
 import MessageUI
 
 enum ContactsDetailsMode: String {
-    case viewing = "viewing"
+    case normal = "normal"
     case editing = "editing"
 }
 
@@ -19,20 +19,68 @@ class ContactsDetailsViewController: UIViewController {
     @IBOutlet weak var editDetailsButton: UIBarButtonItem!
     @IBAction func editDetailsAction(_ sender: Any) {
         switch mode {
-            case .viewing:
+            case .normal:
                 mode = .editing
                 editDetailsButton.title = "Done"
             case .editing:
-                mode = .viewing
+                saveInformation()
+                mode = .normal
                 editDetailsButton.title = "Edit"
         }
         tableView.reloadSections(IndexSet(arrayLiteral: 0), with: .fade)
-//        tableView.reloadRows(at: [IndexPath.init(row: 0, section: 0)], with: .fade)
     }
+    
+    func initDataFields() {
+        dataFields.removeAll()
+        if contact?.firstName != "" {
+            dataFields.append([
+                "type": "First Name",
+                "data": contact?.firstName as Any
+            ])
+        }
+        if contact?.lastName != "" {
+            dataFields.append([
+                "type": "Last Name",
+                "data": contact?.lastName as Any
+            ])
+        }
+        if contact?.email != "" {
+            dataFields.append([
+                "type": "Email",
+                "data": contact?.email as Any
+            ])
+        }
+        if contact?.phoneNumber != "" {
+            dataFields.append([
+                "type": "Phone Number",
+                "data": contact?.phoneNumber as Any
+            ])
+        }
+        editingFields = [
+            [
+                "type": "First Name",
+                "data": contact?.firstName as Any
+            ],[
+                "type": "Last Name",
+                "data": contact?.lastName as Any
+            ],[
+                "type": "Email",
+                "data": contact?.email as Any
+            ],[
+                "type": "Phone Number",
+                "data": contact?.phoneNumber as Any
+            ]
+        ]
+        print(dataFields)
+    }
+    
     @IBOutlet weak var tableView: UITableView!
+    var newContactInformation: Contact?
     var contact: Contact?
     var uuid: Int = 0
-    var mode: ContactsDetailsMode = .viewing
+    var mode: ContactsDetailsMode = .normal
+    var editingFields = [NSDictionary]()
+    var dataFields = [NSDictionary]()
     
     func initTableView() {
         tableView.delegate = self
@@ -42,14 +90,24 @@ class ContactsDetailsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        initTableView()
         contact = ContactsResultService().getData(with: uuid)
+        newContactInformation = Contact()
+        newContactInformation?.uuid = contact!.uuid
+        newContactInformation?.firstName = contact!.firstName
+        newContactInformation?.lastName = contact!.lastName
+        newContactInformation?.email = contact!.email
+        newContactInformation?.phoneNumber = contact!.phoneNumber
+        initTableView()
+        initDataFields()
     }
 }
 
 extension ContactsDetailsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        switch mode {
+        case .editing   : return 1 + editingFields.count
+        default         : return 1 + dataFields.count
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -62,7 +120,15 @@ extension ContactsDetailsViewController: UITableViewDelegate, UITableViewDataSou
             return headerCell
         default:
             let fieldCell = tableView.dequeueReusableCell(withIdentifier: Identifiers.contactsDetailsFieldTableViewCellIdentifier, for: indexPath) as! ContactsDetailsFieldTableViewCell
-            fieldCell.configure(type: "First Name", data: "Saransh", mode: mode)
+            fieldCell.delegate = self
+            switch mode {
+            case .editing:
+                let field = editingFields[indexPath.row - 1] as NSDictionary
+                fieldCell.configure(type: field["type"] as! String, data: field["data"] as! String, mode: mode)
+            default:
+                let field = dataFields[indexPath.row - 1] as NSDictionary
+                fieldCell.configure(type: field["type"] as! String, data: field["data"] as! String, mode: mode)
+            }
             fieldCell.selectionStyle = .none
             return fieldCell
         }
@@ -115,5 +181,25 @@ extension ContactsDetailsViewController: ContactsDetailsHeaderTableViewCellDeleg
     }
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
         controller.dismiss(animated: true)
+    }
+}
+
+extension ContactsDetailsViewController: ContactsDetailsFieldTableViewCellDelegate {
+    
+    func saveInformation() {
+        ContactsResultService().updateData(with: newContactInformation!.uuid, data: newContactInformation!)
+        contact = ContactsResultService().getData(with: uuid)
+        initDataFields()
+    }
+    
+    func updateChangedValue(data: String, type: String) {
+        print("Updated new value")
+        switch type {
+            case "First Name": newContactInformation?.firstName = data
+            case "Last Name": newContactInformation?.lastName = data
+            case "Email": newContactInformation?.email = data
+            case "Phone Number": newContactInformation?.phoneNumber = data
+            default: break
+        }
     }
 }

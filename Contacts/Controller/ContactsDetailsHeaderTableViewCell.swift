@@ -45,7 +45,7 @@ class ContactsDetailsHeaderTableViewCell: UITableViewCell {
     func configure(name: String, mode: ContactsDetailsMode) {
         profileUserNameLabel.text = name
         switch mode {
-        case .viewing:
+        case .normal:
             moreContactInformationView.isHidden = false
             moreContactInformationHeightConstraint.constant = 69
         case .editing:
@@ -57,7 +57,7 @@ class ContactsDetailsHeaderTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        profileImageBackgroundView.layer.cornerRadius = profileImageBackgroundView.frame.height / 2
+        profileImageBackgroundView.layer.cornerRadius = profileImageBackgroundView.frame.size.width / 2
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

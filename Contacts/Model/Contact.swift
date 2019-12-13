@@ -18,4 +18,8 @@ class Contact: Object {
     @objc dynamic var isFavourite: Bool = false
     @objc dynamic var email: String = ""
     var profileImage: UIImageView?
+    
+    override class func primaryKey() -> String? {
+        return "uuid"
+    }
 }
