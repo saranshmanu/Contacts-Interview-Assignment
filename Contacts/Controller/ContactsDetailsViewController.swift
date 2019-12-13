@@ -19,31 +19,22 @@ class ContactsDetailsViewController: UIViewController {
 
     @IBOutlet weak var editDetailsButton: UIBarButtonItem!
     @IBAction func editDetailsAction(_ sender: Any) {
-        switch mode {
-            case .normal:
-                    mode = .editing
-                    editDetailsButton.title = "Done"
-                    tableView.reloadSections(IndexSet(arrayLiteral: 0), with: .fade)
-            case .editing:
-                if newContactInformation!.checkInvalidTextFields().isEmpty {
-                    updateContactInformation()
-                    mode = .normal
-                    editDetailsButton.title = "Edit"
-                    tableView.reloadSections(IndexSet(arrayLiteral: 0), with: .fade)
-                } else {
-                    alertForInvalidTextFields()
-                    break
-                }
-            case .adding:
-                if newContactInformation!.checkInvalidTextFields().isEmpty {
-                    saveContactInformation()
-                    mode = .normal
-                    editDetailsButton.isEnabled = false
-                    tableView.reloadSections(IndexSet(arrayLiteral: 0), with: .fade)
-                } else {
-                    alertForInvalidTextFields()
-                    break
-                }
+        if mode == .normal {
+            editDetailsButton.title = "Done"
+            mode = .editing
+            tableView.reloadSections(IndexSet(arrayLiteral: 0), with: .fade)
+        } else if mode == .editing && newContactInformation!.checkInvalidTextFields().isEmpty {
+            editDetailsButton.title = "Edit"
+            updateContactInformation()
+            mode = .normal
+            tableView.reloadSections(IndexSet(arrayLiteral: 0), with: .fade)
+        } else if mode == .adding && newContactInformation!.checkInvalidTextFields().isEmpty {
+            editDetailsButton.isEnabled = false
+            saveContactInformation()
+            mode = .normal
+            tableView.reloadSections(IndexSet(arrayLiteral: 0), with: .fade)
+        } else {
+            alertForInvalidTextFields()
         }
     }
     
@@ -168,7 +159,6 @@ extension ContactsDetailsViewController: UITableViewDelegate, UITableViewDataSou
             default         : return 1 + dataFields.count
         }
     }
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch indexPath.row {
         case 0:
@@ -200,7 +190,6 @@ extension ContactsDetailsViewController: UITableViewDelegate, UITableViewDataSou
 }
 
 extension ContactsDetailsViewController: ContactsDetailsHeaderTableViewCellDelegate, MFMailComposeViewControllerDelegate, MFMessageComposeViewControllerDelegate {
-    
     func performCall(contact: Contact) {
         if (contact.phoneNumber.isEmpty) {
             self.showAlert(title: "Alert", message: "No phone number found. Cannot place a call to the number.")
@@ -208,7 +197,6 @@ extension ContactsDetailsViewController: ContactsDetailsHeaderTableViewCellDeleg
         guard let number = URL(string: "tel://" + contact.phoneNumber) else { return }
         UIApplication.shared.open(number)
     }
-    
     func performMessage(contact: Contact) {
         if (contact.email.isEmpty) {
             self.showAlert(title: "Alert", message: "No email address found. Cannot send the message.")
@@ -221,7 +209,6 @@ extension ContactsDetailsViewController: ContactsDetailsHeaderTableViewCellDeleg
             present(mail, animated: true)
         }
     }
-    
     func performEmail(contact: Contact) {
         if (contact.phoneNumber.isEmpty) {
             self.showAlert(title: "Alert", message: "No phone number found. Cannot send the message.")
@@ -234,7 +221,6 @@ extension ContactsDetailsViewController: ContactsDetailsHeaderTableViewCellDeleg
             self.present(message, animated: true, completion: nil)
         }
     }
-    
     func performActivity(activity: Activity) {
         switch activity {
         case .call: performCall(contact: contact!)
@@ -252,30 +238,25 @@ extension ContactsDetailsViewController: ContactsDetailsHeaderTableViewCellDeleg
             contact = ContactAPINetworkService().getData(with: contact!.uuid)
         }
     }
-    
     func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
         controller.dismiss(animated: true, completion: nil)
     }
-    
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
         controller.dismiss(animated: true, completion: nil)
     }
 }
 
 extension ContactsDetailsViewController: ContactsDetailsFieldTableViewCellDelegate {
-    
     func saveContactInformation() {
         ContactAPINetworkService().createContactDetails(data: newContactInformation!, completion: { (response) in })
         self.contact = newContactInformation!
         initDataFields()
     }
-    
     func updateContactInformation() {
         ContactAPINetworkService().updateContactDetails(with: newContactInformation!.uuid, data: newContactInformation!, completion: { (response) in })
         contact = ContactAPINetworkService().getData(with: contact!.uuid)
         initDataFields()
     }
-    
     func updateChangedValue(data: String, type: String) {
         switch type {
             case "First Name": newContactInformation?.firstName = data

@@ -48,7 +48,7 @@ class ContactsViewController: UIViewController {
         refreshControl = UIRefreshControl()
         refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
         refreshControl.addTarget(self, action: #selector(fetchData), for: .valueChanged)
-        tableView.insertSubview(refreshControl, at: 0)
+        tableView.refreshControl = refreshControl
     }
     
     func createTableSectionIndex() {
