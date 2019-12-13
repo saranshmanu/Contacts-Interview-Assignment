@@ -22,6 +22,7 @@ protocol ContactsDetailsHeaderTableViewCellDelegate {
 
 class ContactsDetailsHeaderTableViewCell: UITableViewCell {
 
+    @IBOutlet weak var favoriteButton: UIButton!
     @IBOutlet weak var moreContactInformationHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var moreContactInformationView: UIStackView!
     @IBOutlet weak var profileUserNameLabel: UILabel!
@@ -30,6 +31,9 @@ class ContactsDetailsHeaderTableViewCell: UITableViewCell {
     var delegate: ContactsDetailsHeaderTableViewCellDelegate?
     
     @IBAction func favourite(_ sender: Any) {
+        favoriteButton.isSelected ?
+            (favoriteButton.isSelected = false) :
+            (favoriteButton.isSelected = true)
         delegate?.performActivity(activity: .favourite)
     }
     @IBAction func email(_ sender: Any) {
@@ -42,8 +46,11 @@ class ContactsDetailsHeaderTableViewCell: UITableViewCell {
         delegate?.performActivity(activity: .message)
     }
     
-    func configure(name: String, mode: ContactsDetailsMode) {
+    func configure(name: String, mode: ContactsDetailsMode, isFavourite: Bool) {
         profileUserNameLabel.text = name
+        isFavourite ?
+            (favoriteButton.isSelected = true) :
+            (favoriteButton.isSelected = false)
         switch mode {
         case .normal:
             moreContactInformationView.isHidden = false
@@ -61,6 +68,8 @@ class ContactsDetailsHeaderTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         profileImageBackgroundView.layer.cornerRadius = profileImageBackgroundView.frame.size.width / 2
+        favoriteButton.setImage(UIImage.init(named: "favourite_button_selected"), for: .selected)
+        favoriteButton.setImage(UIImage.init(named: "favourite_button"), for: .normal)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

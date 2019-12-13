@@ -134,6 +134,29 @@ class ContactNetworkService {
         }
     }
     
+    func addContactFavoriteStatus(to status: Bool, uuid: Int) {
+        let realm = try! Realm()
+        let query = realm.objects(Contact.self).filter("uuid == \(uuid)").first
+        try! realm.write {
+            query?.isFavourite = status
+            
+        }
+        let data: Contact = query!
+        if ContactNetworkService.refreshStatus == .starting {
+            ContactNetworkService.contactUpdateBuffer.append(data)
+        } else {
+            let server = NetworkManager()
+            server.uuid = uuid
+            server.request(service: .putContactDetails, parameters: createContactJSON(data: data)) { (error, result) in
+                if error == false {
+                    print("Updated the value with uuid: \(data.uuid)")
+                } else {
+                    print("Error for updating the value with uuid: \(data.uuid)")
+                }
+            }
+        }
+    }
+    
     func updateContactDetails(with uuid: Int, data: Contact) {
         let realm = try! Realm()
         let query = realm.objects(Contact.self).filter("uuid == \(uuid)").first

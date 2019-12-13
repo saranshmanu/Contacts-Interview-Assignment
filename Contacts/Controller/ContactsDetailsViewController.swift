@@ -171,24 +171,18 @@ extension ContactsDetailsViewController: UITableViewDelegate, UITableViewDataSou
         switch indexPath.row {
         case 0:
             let headerCell = tableView.dequeueReusableCell(withIdentifier: Identifiers.contactsDetailsHeaderTableViewCellIdentifier, for: indexPath) as! ContactsDetailsHeaderTableViewCell
-            headerCell.configure(name: contact!.firstName + " " + contact!.lastName, mode: mode)
+            headerCell.configure(name: contact!.firstName + " " + contact!.lastName, mode: mode, isFavourite: contact!.isFavourite)
             headerCell.selectionStyle = .none
             headerCell.delegate = self
             return headerCell
         default:
             let fieldCell = tableView.dequeueReusableCell(withIdentifier: Identifiers.contactsDetailsFieldTableViewCellIdentifier, for: indexPath) as! ContactsDetailsFieldTableViewCell
             fieldCell.delegate = self
-            switch mode {
-            case .editing:
-                let field = editingFields[indexPath.row - 1] as NSDictionary
-                fieldCell.configure(type: field["type"] as! String, data: field["data"] as! String, mode: mode, placeholder: field["placeholder"] as! String)
-            case .adding:
-                let field = editingFields[indexPath.row - 1] as NSDictionary
-                fieldCell.configure(type: field["type"] as! String, data: field["data"] as! String, mode: mode, placeholder: field["placeholder"] as! String)
-            default:
-                let field = dataFields[indexPath.row - 1] as NSDictionary
-                fieldCell.configure(type: field["type"] as! String, data: field["data"] as! String, mode: mode, placeholder: field["placeholder"] as! String)
-            }
+            var textField = NSDictionary()
+            (mode == .normal) ?
+                (textField = dataFields[indexPath.row - 1] as NSDictionary) :
+                (textField = editingFields[indexPath.row - 1] as NSDictionary)
+            fieldCell.configure(type: textField["type"] as! String, data: textField["data"] as! String, mode: mode, placeholder: textField["placeholder"] as! String)
             fieldCell.selectionStyle = .none
             return fieldCell
         }
@@ -241,8 +235,11 @@ extension ContactsDetailsViewController: ContactsDetailsHeaderTableViewCellDeleg
                 self.tableView.beginUpdates()
                 self.tableView.endUpdates()
             }
-        default: break
-            // add to favourites
+        default:
+            let status: Bool?
+            contact!.isFavourite ? (status = false) : (status = true)
+            ContactNetworkService().addContactFavoriteStatus(to: status!, uuid: contact!.uuid)
+            contact = ContactNetworkService().getData(with: contact!.uuid)
         }
     }
     
