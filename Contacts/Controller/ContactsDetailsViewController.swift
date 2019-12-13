@@ -71,7 +71,6 @@ class ContactsDetailsViewController: UIViewController {
                 "data": contact?.phoneNumber as Any
             ]
         ]
-        print(dataFields)
     }
     
     @IBOutlet weak var tableView: UITableView!
@@ -193,7 +192,6 @@ extension ContactsDetailsViewController: ContactsDetailsFieldTableViewCellDelega
     }
     
     func updateChangedValue(data: String, type: String) {
-        print("Updated new value")
         switch type {
             case "First Name": newContactInformation?.firstName = data
             case "Last Name": newContactInformation?.lastName = data

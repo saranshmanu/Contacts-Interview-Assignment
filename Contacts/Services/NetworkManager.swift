@@ -16,7 +16,7 @@ class NetworkManager {
     
     private func getURL(service: Service) -> URL {
         var urlString = NetworkRouter().serverBaseURL() + NetworkRouter().getNetworkRoute(service: service)
-        if service == .getContactDetails {
+        if service == .getContactDetails || service == .putContactDetails {
             urlString.append("\(uuid ?? 0)" + ".json")
         }
         let url = URL(string: urlString)
@@ -26,11 +26,13 @@ class NetworkManager {
     // network request to handle the error and other network parameters
     public func request(service: Service, header: HTTPHeaders? = [:], parameters: Parameters? = [:], completion: @escaping (Bool, Any?) -> ()) {
         let url = getURL(service: service)
-        let method: HTTPMethod = HTTPMethod(rawValue: NetworkRouter().getNetworkRoute(service: service)) ?? .get
+        let method = NetworkRouter().getNetworkHTTPMethod(service: service)
         Alamofire.request(
             url, method: method,
-            parameters: parameters,
-            headers: header).responseJSON { response in
+            parameters: parameters!,
+            encoding: JSONEncoding.init(),
+            headers: ["Content-Type": "application/json"]
+        ).responseJSON { response in
                 switch response.result {
             case .success(_) :
                 let result = response.result.value as Any

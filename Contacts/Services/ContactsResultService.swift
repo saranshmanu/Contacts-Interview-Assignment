@@ -89,8 +89,42 @@ class ContactsResultService {
         }
     }
     
+    func createContactDetails(data: Contact) {
+        let params = [
+            "first_name": data.firstName as String,
+            "last_name": data.lastName as String,
+            "phone_number": data.phoneNumber as String,
+            "favorite": data.isFavourite as Bool,
+            "email": data.email as String
+        ] as [String : Any]
+        print(params)
+        NetworkManager().request(service: .postContactDetails, parameters: params) { (error, result) in
+            print(result as Any)
+            if error == false {
+                print("Updated the value with uuid: \(data.uuid)")
+            } else {
+                print("Error for updating the value with uuid: \(data.uuid)")
+            }
+        }
+    }
+    
     func updateContactDetails(data: Contact) {
-        print("Updated the data on the server with uuid: \(data.uuid)")
+        let server = NetworkManager()
+        server.uuid = data.uuid
+        let params = [
+            "first_name": data.firstName as String,
+            "last_name": data.lastName as String,
+            "phone_number": data.phoneNumber as String,
+            "favorite": data.isFavourite as Bool,
+            "email": data.email as String
+            ] as [String : Any]
+        server.request(service: .putContactDetails, parameters: params) { (error, result) in
+            if error == false {
+                print("Updated the value with uuid: \(data.uuid)")
+            } else {
+                print("Error for updating the value with uuid: \(data.uuid)")
+            }
+        }
     }
     
     func getData() -> [Contact] {

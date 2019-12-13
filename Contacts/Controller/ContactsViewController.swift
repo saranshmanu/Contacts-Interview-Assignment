@@ -61,7 +61,7 @@ class ContactsViewController: UIViewController, ContactsResultServiceDelegate {
         initContactsResultService()
         initTableView()
         reloadTableView()
-        contactsResultService?.refreshData()
+//        contactsResultService?.refreshData()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

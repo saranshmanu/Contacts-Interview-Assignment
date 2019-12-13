@@ -13,19 +13,22 @@ enum Service: Int {
     case getContact = 0
     case getContactDetails = 1
     case postContactDetails = 2
+    case putContactDetails = 3
 }
 
 class NetworkRouter {
     var serviceURL = [
         0: "contacts.json",
         1: "contacts/",
-        2: "contacts.json"
+        2: "contacts.json",
+        3: "contacts/"
     ] as [Int: String]
     
     var serviceHTTPMethod = [
         0: .get,
         1: .get,
-        2: .post
+        2: .post,
+        3: .put
     ] as [Int: HTTPMethod]
     
     // base URL for the server
