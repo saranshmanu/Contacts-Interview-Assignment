@@ -51,6 +51,9 @@ class ContactsDetailsHeaderTableViewCell: UITableViewCell {
         case .editing:
             moreContactInformationView.isHidden = true
             moreContactInformationHeightConstraint.constant = 0
+        case .adding:
+            moreContactInformationView.isHidden = true
+            moreContactInformationHeightConstraint.constant = 0
         }
         delegate?.performActivity(activity: .refresh)
     }

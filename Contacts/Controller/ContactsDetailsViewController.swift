@@ -12,6 +12,7 @@ import MessageUI
 enum ContactsDetailsMode: String {
     case normal = "normal"
     case editing = "editing"
+    case adding = "adding"
 }
 
 class ContactsDetailsViewController: UIViewController {
@@ -23,9 +24,13 @@ class ContactsDetailsViewController: UIViewController {
                 mode = .editing
                 editDetailsButton.title = "Done"
             case .editing:
-                saveInformation()
+                updateContactInformation()
                 mode = .normal
                 editDetailsButton.title = "Edit"
+            case .adding:
+                saveContactInformation()
+                mode = .normal
+                editDetailsButton.isEnabled = false
         }
         tableView.reloadSections(IndexSet(arrayLiteral: 0), with: .fade)
     }
@@ -76,7 +81,6 @@ class ContactsDetailsViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     var newContactInformation: Contact?
     var contact: Contact?
-    var uuid: Int = 0
     var mode: ContactsDetailsMode = .normal
     var editingFields = [NSDictionary]()
     var dataFields = [NSDictionary]()
@@ -89,7 +93,6 @@ class ContactsDetailsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        contact = ContactsResultService().getData(with: uuid)
         newContactInformation = Contact()
         newContactInformation?.uuid = contact!.uuid
         newContactInformation?.firstName = contact!.firstName
@@ -98,14 +101,18 @@ class ContactsDetailsViewController: UIViewController {
         newContactInformation?.phoneNumber = contact!.phoneNumber
         initTableView()
         initDataFields()
+        if mode == .adding {
+            editDetailsButton.title = "Done"
+        }
     }
 }
 
 extension ContactsDetailsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch mode {
-        case .editing   : return 1 + editingFields.count
-        default         : return 1 + dataFields.count
+            case .editing   : return 1 + editingFields.count
+            case .adding   : return 1 + editingFields.count
+            default         : return 1 + dataFields.count
         }
     }
     
@@ -122,6 +129,9 @@ extension ContactsDetailsViewController: UITableViewDelegate, UITableViewDataSou
             fieldCell.delegate = self
             switch mode {
             case .editing:
+                let field = editingFields[indexPath.row - 1] as NSDictionary
+                fieldCell.configure(type: field["type"] as! String, data: field["data"] as! String, mode: mode)
+            case .adding:
                 let field = editingFields[indexPath.row - 1] as NSDictionary
                 fieldCell.configure(type: field["type"] as! String, data: field["data"] as! String, mode: mode)
             default:
@@ -185,9 +195,15 @@ extension ContactsDetailsViewController: ContactsDetailsHeaderTableViewCellDeleg
 
 extension ContactsDetailsViewController: ContactsDetailsFieldTableViewCellDelegate {
     
-    func saveInformation() {
-        ContactsResultService().updateData(with: newContactInformation!.uuid, data: newContactInformation!)
-        contact = ContactsResultService().getData(with: uuid)
+    func saveContactInformation() {
+        ContactsResultService().createContactDetails(data: newContactInformation!)
+        contact = newContactInformation!
+        initDataFields()
+    }
+    
+    func updateContactInformation() {
+        ContactsResultService().updateContactDetails(with: newContactInformation!.uuid, data: newContactInformation!)
+        contact = ContactsResultService().getData(with: contact!.uuid)
         initDataFields()
     }
     

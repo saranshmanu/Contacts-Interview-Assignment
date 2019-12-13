@@ -27,20 +27,35 @@ class NetworkManager {
     public func request(service: Service, header: HTTPHeaders? = [:], parameters: Parameters? = [:], completion: @escaping (Bool, Any?) -> ()) {
         let url = getURL(service: service)
         let method = NetworkRouter().getNetworkHTTPMethod(service: service)
-        Alamofire.request(
-            url, method: method,
-            parameters: parameters!,
-            encoding: JSONEncoding.init(),
-            headers: ["Content-Type": "application/json"]
-        ).responseJSON { response in
-                switch response.result {
-            case .success(_) :
-                let result = response.result.value as Any
-                completion(false, result)
-            case .failure :
-                completion(true, nil)
+        if method == .get {
+            Alamofire.request(
+                url, method: method
+            ).responseJSON { response in
+                    switch response.result {
+                case .success(_) :
+                    let result = response.result.value as Any
+                    completion(false, result)
+                case .failure :
+                    completion(true, nil)
+                }
+            }
+        } else {
+            Alamofire.request(
+                url, method: method,
+                parameters: parameters!,
+                encoding: JSONEncoding.init(),
+                headers: ["Content-Type": "application/json"]
+            ).responseJSON { response in
+                    switch response.result {
+                case .success(_) :
+                    let result = response.result.value as Any
+                    completion(false, result)
+                case .failure :
+                    completion(true, nil)
+                }
             }
         }
+        
     }
         
     public func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {

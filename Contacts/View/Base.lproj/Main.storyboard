@@ -94,11 +94,15 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" style="plain" systemItem="add" id="hUh-7n-LOc">
                             <color key="tintColor" name="ThemeGreen"/>
+                            <connections>
+                                <action selector="addContactsAction:" destination="BYZ-38-t0r" id="EWC-rH-iBb"/>
+                            </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="3el-GP-zk7" id="Gy4-Pp-s9l"/>
                         <segue destination="hDc-zc-6HF" kind="show" identifier="ContactsDetailsSegue" id="nJT-dU-y5J"/>
+                        <segue destination="hDc-zc-6HF" kind="show" identifier="AddContactSegue" id="3yd-i9-1Fb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -150,8 +154,8 @@
                                                                     <constraint firstAttribute="trailing" secondItem="YDK-Io-Rcz" secondAttribute="trailing" constant="3" id="fMy-jV-fzN"/>
                                                                 </constraints>
                                                             </view>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Saransh Mittal" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="83n-sG-Jea">
-                                                                <rect key="frame" x="132.5" y="188" width="149" height="26.5"/>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Saransh Mittal" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="83n-sG-Jea">
+                                                                <rect key="frame" x="20" y="188" width="374" height="26.5"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="26.5" id="WRA-CO-Zw1"/>
                                                                 </constraints>
@@ -266,6 +270,8 @@
                                                             <constraint firstItem="83n-sG-Jea" firstAttribute="top" secondItem="YDK-Io-Rcz" secondAttribute="bottom" constant="8" id="V11-0c-bAl"/>
                                                             <constraint firstItem="z3h-cC-Pq1" firstAttribute="centerX" secondItem="BJM-bp-3gV" secondAttribute="centerX" id="WBJ-55-ya5"/>
                                                             <constraint firstAttribute="bottom" secondItem="z3h-cC-Pq1" secondAttribute="bottom" constant="19.5" id="YTl-Ch-YWi"/>
+                                                            <constraint firstAttribute="trailing" secondItem="83n-sG-Jea" secondAttribute="trailing" constant="20" id="ZCh-29-4yE"/>
+                                                            <constraint firstItem="83n-sG-Jea" firstAttribute="leading" secondItem="BJM-bp-3gV" secondAttribute="leading" constant="20" id="eMp-Ev-c4s"/>
                                                             <constraint firstItem="83n-sG-Jea" firstAttribute="centerX" secondItem="BJM-bp-3gV" secondAttribute="centerX" id="m4g-wf-9m6"/>
                                                             <constraint firstItem="4JA-ES-q3r" firstAttribute="top" secondItem="BJM-bp-3gV" secondAttribute="top" constant="55" id="qRv-mF-1Gy"/>
                                                             <constraint firstAttribute="trailing" secondItem="4JA-ES-q3r" secondAttribute="trailing" constant="143" id="zP8-iL-4aD"/>
@@ -407,4 +413,7 @@
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="3yd-i9-1Fb"/>
+    </inferredMetricsTieBreakers>
 </document>

@@ -10,12 +10,22 @@ import UIKit
 
 class ContactsViewController: UIViewController, ContactsResultServiceDelegate {
     
-    func refresh() {
-        reloadTableView()
+    @IBAction func addContactsAction(_ sender: Any) {
+        self.performSegue(withIdentifier: "AddContactSegue", sender: self)
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        refresh()
+    func refresh(status: Bool) {
+        if status == true {
+            createTableSectionIndex()
+            tableView.reloadData()
+            tableView.beginUpdates()
+            tableView.endUpdates()
+        }
+        refreshControl.endRefreshing()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        refresh(status: true)
     }
     
     var contacts = [Contact]()
@@ -23,18 +33,23 @@ class ContactsViewController: UIViewController, ContactsResultServiceDelegate {
     var contactsSectionTitles = [String]()
     var selectedUUID: Int = 0
     
+    @objc func fetchData() {
+        contactsResultService?.refreshContactDetails()
+    }
+    
     func initTableView() {
         tableView.delegate = self
         tableView.dataSource = self
-    }
-    
-    func reloadTableView() {
-        contacts = (contactsResultService?.getData() ?? nil)!
-        createTableSectionIndex()
-        tableView.reloadData()
+        refreshControl = UIRefreshControl()
+        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        refreshControl.addTarget(self, action: #selector(fetchData), for: .valueChanged)
+        tableView.insertSubview(refreshControl, at: 0)
     }
     
     func createTableSectionIndex() {
+        contacts = contactsResultService?.getData() ?? [Contact]()
+        contactsDictionary.removeAll()
+        contactsSectionTitles.removeAll()
         for contact in contacts {
             let flag = String(contact.firstName.prefix(1))
             if var carValues = contactsDictionary[flag] {
@@ -55,19 +70,23 @@ class ContactsViewController: UIViewController, ContactsResultServiceDelegate {
 
     var contactsResultService: ContactsResultService?
     @IBOutlet weak var tableView: UITableView!
+    var refreshControl: UIRefreshControl!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         initContactsResultService()
         initTableView()
-        reloadTableView()
-//        contactsResultService?.refreshData()
+        refresh(status: true)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if(segue.identifier == "ContactsDetailsSegue") {
                 let contactsDetailsViewController = segue.destination as! ContactsDetailsViewController
-            contactsDetailsViewController.uuid = selectedUUID
+            contactsDetailsViewController.contact = ContactsResultService().getData(with: selectedUUID)
+        } else if(segue.identifier == "AddContactSegue") {
+            let contactsDetailsViewController = segue.destination as! ContactsDetailsViewController
+            contactsDetailsViewController.contact = Contact()
+            contactsDetailsViewController.mode = .adding
         }
     }
 }
