@@ -9,11 +9,10 @@
 import Foundation
 import Alamofire
 
-// the Network Handler class manages the network request for GET and POST requests
+// Network Handler class to manage the network request
 class NetworkManager {
     
     var uuid: Int?
-    
     private func getURL(service: Service) -> URL {
         var urlString = NetworkRouter().serverBaseURL() + NetworkRouter().getNetworkRoute(service: service)
         if service == .getContactDetails || service == .putContactDetails {

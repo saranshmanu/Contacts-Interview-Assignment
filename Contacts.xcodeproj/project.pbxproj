@@ -13,8 +13,8 @@
 		951F048623A1596200B21B50 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951F048523A1596200B21B50 /* Contact.swift */; };
 		9529A69023A353F0002224D9 /* logs.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9529A68F23A353F0002224D9 /* logs.txt */; };
 		9529A69223A3A185002224D9 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9529A69123A3A184002224D9 /* StringExtension.swift */; };
-		9529A69723A3BBF5002224D9 /* ViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9529A69623A3BBF5002224D9 /* ViewControllerExtension.swift */; };
-		95889B0423A18668003E2348 /* ContactNetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95889B0323A18668003E2348 /* ContactNetworkService.swift */; };
+		9529A69723A3BBF5002224D9 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9529A69623A3BBF5002224D9 /* UIViewControllerExtension.swift */; };
+		95889B0423A18668003E2348 /* ContactAPINetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95889B0323A18668003E2348 /* ContactAPINetworkService.swift */; };
 		95889B0623A22684003E2348 /* NetworkRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95889B0523A22684003E2348 /* NetworkRouter.swift */; };
 		95889B0A23A26416003E2348 /* ContactsDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95889B0923A26416003E2348 /* ContactsDetailsViewController.swift */; };
 		95889B0C23A2672B003E2348 /* ContactsDetailsFieldTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95889B0B23A2672B003E2348 /* ContactsDetailsFieldTableViewCell.swift */; };
@@ -62,8 +62,8 @@
 		951F048523A1596200B21B50 /* Contact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
 		9529A68F23A353F0002224D9 /* logs.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = logs.txt; sourceTree = "<group>"; };
 		9529A69123A3A184002224D9 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
-		9529A69623A3BBF5002224D9 /* ViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerExtension.swift; sourceTree = "<group>"; };
-		95889B0323A18668003E2348 /* ContactNetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactNetworkService.swift; sourceTree = "<group>"; };
+		9529A69623A3BBF5002224D9 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
+		95889B0323A18668003E2348 /* ContactAPINetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactAPINetworkService.swift; sourceTree = "<group>"; };
 		95889B0523A22684003E2348 /* NetworkRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkRouter.swift; sourceTree = "<group>"; };
 		95889B0923A26416003E2348 /* ContactsDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsDetailsViewController.swift; sourceTree = "<group>"; };
 		95889B0B23A2672B003E2348 /* ContactsDetailsFieldTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsDetailsFieldTableViewCell.swift; sourceTree = "<group>"; };
@@ -257,7 +257,7 @@
 			children = (
 				95889B0523A22684003E2348 /* NetworkRouter.swift */,
 				9590B40223A126C800971DB0 /* NetworkManager.swift */,
-				95889B0323A18668003E2348 /* ContactNetworkService.swift */,
+				95889B0323A18668003E2348 /* ContactAPINetworkService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -266,7 +266,7 @@
 			isa = PBXGroup;
 			children = (
 				9529A69123A3A184002224D9 /* StringExtension.swift */,
-				9529A69623A3BBF5002224D9 /* ViewControllerExtension.swift */,
+				9529A69623A3BBF5002224D9 /* UIViewControllerExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -520,8 +520,8 @@
 				951F048223A1582900B21B50 /* TableViewCellIndentifiers.swift in Sources */,
 				9590B3D723A1223600971DB0 /* ContactsViewController.swift in Sources */,
 				9590B3D323A1223600971DB0 /* AppDelegate.swift in Sources */,
-				9529A69723A3BBF5002224D9 /* ViewControllerExtension.swift in Sources */,
-				95889B0423A18668003E2348 /* ContactNetworkService.swift in Sources */,
+				9529A69723A3BBF5002224D9 /* UIViewControllerExtension.swift in Sources */,
+				95889B0423A18668003E2348 /* ContactAPINetworkService.swift in Sources */,
 				9590B3D523A1223600971DB0 /* SceneDelegate.swift in Sources */,
 				95889B0C23A2672B003E2348 /* ContactsDetailsFieldTableViewCell.swift in Sources */,
 				951F048623A1596200B21B50 /* Contact.swift in Sources */,

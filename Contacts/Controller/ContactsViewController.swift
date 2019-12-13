@@ -64,11 +64,11 @@ class ContactsViewController: UIViewController, ContactNetworkServiceDelegate {
     }
     
     func initContactsResultService() {
-        contactsResultService = ContactNetworkService()
+        contactsResultService = ContactAPINetworkService()
         contactsResultService?.delegate = self
     }
 
-    var contactsResultService: ContactNetworkService?
+    var contactsResultService: ContactAPINetworkService?
     @IBOutlet weak var tableView: UITableView!
     var refreshControl: UIRefreshControl!
     
@@ -82,7 +82,7 @@ class ContactsViewController: UIViewController, ContactNetworkServiceDelegate {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if(segue.identifier == "ContactsDetailsSegue") {
                 let contactsDetailsViewController = segue.destination as! ContactsDetailsViewController
-            contactsDetailsViewController.contact = ContactNetworkService().getData(with: selectedUUID)
+            contactsDetailsViewController.contact = ContactAPINetworkService().getData(with: selectedUUID)
         } else if(segue.identifier == "AddContactSegue") {
             let contactsDetailsViewController = segue.destination as! ContactsDetailsViewController
             contactsDetailsViewController.contact = Contact()

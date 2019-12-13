@@ -28,6 +28,7 @@ class ContactsDetailsHeaderTableViewCell: UITableViewCell {
     @IBOutlet weak var profileUserNameLabel: UILabel!
     @IBOutlet weak var profileImageBackgroundView: UIView!
     @IBOutlet weak var profileImageView: UIImageView!
+    
     var delegate: ContactsDetailsHeaderTableViewCellDelegate?
     
     @IBAction func favourite(_ sender: Any) {
@@ -52,15 +53,15 @@ class ContactsDetailsHeaderTableViewCell: UITableViewCell {
             (favoriteButton.isSelected = true) :
             (favoriteButton.isSelected = false)
         switch mode {
-        case .normal:
-            moreContactInformationView.isHidden = false
-            moreContactInformationHeightConstraint.constant = 69
-        case .editing:
-            moreContactInformationView.isHidden = true
-            moreContactInformationHeightConstraint.constant = 0
-        case .adding:
-            moreContactInformationView.isHidden = true
-            moreContactInformationHeightConstraint.constant = 0
+            case .normal:
+                moreContactInformationView.isHidden = false
+                moreContactInformationHeightConstraint.constant = 69
+            case .editing:
+                moreContactInformationView.isHidden = true
+                moreContactInformationHeightConstraint.constant = 0
+            case .adding:
+                moreContactInformationView.isHidden = true
+                moreContactInformationHeightConstraint.constant = 0
         }
         delegate?.performActivity(activity: .refresh)
     }

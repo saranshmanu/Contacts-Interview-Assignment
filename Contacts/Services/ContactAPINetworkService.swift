@@ -1,5 +1,5 @@
 //
-//  ContactNetworkService.swift
+//  ContactAPINetworkService.swift
 //  Contacts
 //
 //  Created by Saransh Mittal on 12/12/19.
@@ -13,7 +13,7 @@ protocol ContactNetworkServiceDelegate {
     func refresh(status: Bool)
 }
 
-class ContactNetworkService {
+class ContactAPINetworkService {
     
     public var delegate: ContactNetworkServiceDelegate?
     
@@ -26,9 +26,9 @@ class ContactNetworkService {
     static var refreshStatus: NetworkStatus = .completed {
         didSet {
             if refreshStatus == .completed && !contactUpdateBuffer.isEmpty {
-                let updatedContacts = ContactNetworkService.contactUpdateBuffer
+                let updatedContacts = ContactAPINetworkService.contactUpdateBuffer
                 for flag in updatedContacts {
-                    ContactNetworkService().updateContactDetails(with: flag.uuid, data: flag)
+                    ContactAPINetworkService().updateContactDetails(with: flag.uuid, data: flag)
                 }
             }
         }
@@ -42,19 +42,19 @@ class ContactNetworkService {
     }
     
     func refreshContactDetails() {
-        ContactNetworkService.refreshStatus = .starting
+        ContactAPINetworkService.refreshStatus = .starting
         NetworkManager().request(service: .getContact) { (error, result) in
             if let data: [NSDictionary] = result as? [NSDictionary] {
                 // starting the process to get all contact details
                 self.parseContactList(result: data) { result in
                     let contactList = result as! [Contact]
                     self.saveData(contactList: contactList)
-                    ContactNetworkService.refreshStatus = .completed
+                    ContactAPINetworkService.refreshStatus = .completed
                     self.delegate?.refresh(status: true)
                 }
             } else {
                 // failed to update the contact list
-                ContactNetworkService.refreshStatus = .completed
+                ContactAPINetworkService.refreshStatus = .completed
                 self.delegate?.refresh(status: false)
             }
         }
@@ -142,8 +142,8 @@ class ContactNetworkService {
             
         }
         let data: Contact = query!
-        if ContactNetworkService.refreshStatus == .starting {
-            ContactNetworkService.contactUpdateBuffer.append(data)
+        if ContactAPINetworkService.refreshStatus == .starting {
+            ContactAPINetworkService.contactUpdateBuffer.append(data)
         } else {
             let server = NetworkManager()
             server.uuid = uuid
@@ -166,8 +166,8 @@ class ContactNetworkService {
             query?.email = data.email
             query?.phoneNumber = data.phoneNumber
         }
-        if ContactNetworkService.refreshStatus == .starting {
-            ContactNetworkService.contactUpdateBuffer.append(data)
+        if ContactAPINetworkService.refreshStatus == .starting {
+            ContactAPINetworkService.contactUpdateBuffer.append(data)
         } else {
             let server = NetworkManager()
             server.uuid = data.uuid

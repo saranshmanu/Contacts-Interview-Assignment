@@ -16,15 +16,6 @@ enum ContactsDetailsMode: String {
 }
 
 class ContactsDetailsViewController: UIViewController {
-    
-    enum InvalidTextFieldCode: String {
-        case firstNameEmpty = "First name cannot be left blank"
-        case lastNameEmpty = "Last name cannot be left blank"
-        case firstNameShort = "First name is too short (minimum is 2 characters)"
-        case lastNameShort = "Last name is too short (minimum is 2 characters)"
-        case emailFormatInvalid = "Invalid email address"
-        case phoneNumberFormatInvalid = "Invalid phone number"
-    }
 
     @IBOutlet weak var editDetailsButton: UIBarButtonItem!
     @IBAction func editDetailsAction(_ sender: Any) {
@@ -67,6 +58,15 @@ class ContactsDetailsViewController: UIViewController {
             message += "\(i+1)) \(codes[i].rawValue)\n"
         }
         showAlert(title: "Error", message: message)
+    }
+    
+    enum InvalidTextFieldCode: String {
+        case firstNameEmpty = "First name cannot be left blank"
+        case lastNameEmpty = "Last name cannot be left blank"
+        case firstNameShort = "First name is too short (minimum is 2 characters)"
+        case lastNameShort = "Last name is too short (minimum is 2 characters)"
+        case emailFormatInvalid = "Invalid email address"
+        case phoneNumberFormatInvalid = "Invalid phone number"
     }
     
     func checkFields() -> [InvalidTextFieldCode] {
@@ -255,8 +255,8 @@ extension ContactsDetailsViewController: ContactsDetailsHeaderTableViewCellDeleg
         default:
             let status: Bool?
             contact!.isFavourite ? (status = false) : (status = true)
-            ContactNetworkService().addContactFavoriteStatus(to: status!, uuid: contact!.uuid)
-            contact = ContactNetworkService().getData(with: contact!.uuid)
+            ContactAPINetworkService().addContactFavoriteStatus(to: status!, uuid: contact!.uuid)
+            contact = ContactAPINetworkService().getData(with: contact!.uuid)
         }
     }
     
@@ -272,14 +272,14 @@ extension ContactsDetailsViewController: ContactsDetailsHeaderTableViewCellDeleg
 extension ContactsDetailsViewController: ContactsDetailsFieldTableViewCellDelegate {
     
     func saveContactInformation() {
-        ContactNetworkService().createContactDetails(data: newContactInformation!)
+        ContactAPINetworkService().createContactDetails(data: newContactInformation!)
         contact = newContactInformation!
         initDataFields()
     }
     
     func updateContactInformation() {
-        ContactNetworkService().updateContactDetails(with: newContactInformation!.uuid, data: newContactInformation!)
-        contact = ContactNetworkService().getData(with: contact!.uuid)
+        ContactAPINetworkService().updateContactDetails(with: newContactInformation!.uuid, data: newContactInformation!)
+        contact = ContactAPINetworkService().getData(with: contact!.uuid)
         initDataFields()
     }
     
