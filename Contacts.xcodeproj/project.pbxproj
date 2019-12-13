@@ -8,12 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		461CD5F5DE315FD71B52B2A3 /* Pods_ContactsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 256A3E02393DBBD1DD018A95 /* Pods_ContactsTests.framework */; };
-		951F048223A1582900B21B50 /* Indentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951F048123A1582900B21B50 /* Indentifiers.swift */; };
+		951F048223A1582900B21B50 /* TableViewCellIndentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951F048123A1582900B21B50 /* TableViewCellIndentifiers.swift */; };
 		951F048423A1589700B21B50 /* ContactsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951F048323A1589700B21B50 /* ContactsTableViewCell.swift */; };
 		951F048623A1596200B21B50 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951F048523A1596200B21B50 /* Contact.swift */; };
-		9529A68E23A351EE002224D9 /* TextLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9529A68D23A351EE002224D9 /* TextLog.swift */; };
 		9529A69023A353F0002224D9 /* logs.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9529A68F23A353F0002224D9 /* logs.txt */; };
-		9529A69223A3A185002224D9 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9529A69123A3A184002224D9 /* String.swift */; };
+		9529A69223A3A185002224D9 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9529A69123A3A184002224D9 /* StringExtension.swift */; };
+		9529A69723A3BBF5002224D9 /* ViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9529A69623A3BBF5002224D9 /* ViewControllerExtension.swift */; };
 		95889B0423A18668003E2348 /* ContactNetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95889B0323A18668003E2348 /* ContactNetworkService.swift */; };
 		95889B0623A22684003E2348 /* NetworkRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95889B0523A22684003E2348 /* NetworkRouter.swift */; };
 		95889B0A23A26416003E2348 /* ContactsDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95889B0923A26416003E2348 /* ContactsDetailsViewController.swift */; };
@@ -57,12 +57,12 @@
 		5AE6EB0EAE12DF5709318102 /* Pods-ContactsTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ContactsTests.debug.xcconfig"; path = "Target Support Files/Pods-ContactsTests/Pods-ContactsTests.debug.xcconfig"; sourceTree = "<group>"; };
 		6D5A5F83A580145F67BCC4D7 /* Pods_Contacts_ContactsUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Contacts_ContactsUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E1E0637447412B2A812D2DD /* Pods-Contacts.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Contacts.debug.xcconfig"; path = "Target Support Files/Pods-Contacts/Pods-Contacts.debug.xcconfig"; sourceTree = "<group>"; };
-		951F048123A1582900B21B50 /* Indentifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Indentifiers.swift; sourceTree = "<group>"; };
+		951F048123A1582900B21B50 /* TableViewCellIndentifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCellIndentifiers.swift; sourceTree = "<group>"; };
 		951F048323A1589700B21B50 /* ContactsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsTableViewCell.swift; sourceTree = "<group>"; };
 		951F048523A1596200B21B50 /* Contact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
-		9529A68D23A351EE002224D9 /* TextLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextLog.swift; sourceTree = "<group>"; };
 		9529A68F23A353F0002224D9 /* logs.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = logs.txt; sourceTree = "<group>"; };
-		9529A69123A3A184002224D9 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		9529A69123A3A184002224D9 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
+		9529A69623A3BBF5002224D9 /* ViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerExtension.swift; sourceTree = "<group>"; };
 		95889B0323A18668003E2348 /* ContactNetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactNetworkService.swift; sourceTree = "<group>"; };
 		95889B0523A22684003E2348 /* NetworkRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkRouter.swift; sourceTree = "<group>"; };
 		95889B0923A26416003E2348 /* ContactsDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsDetailsViewController.swift; sourceTree = "<group>"; };
@@ -143,6 +143,7 @@
 		9529A69323A3AB2A002224D9 /* TableViewCells */ = {
 			isa = PBXGroup;
 			children = (
+				951F048123A1582900B21B50 /* TableViewCellIndentifiers.swift */,
 				951F048323A1589700B21B50 /* ContactsTableViewCell.swift */,
 				95889B0D23A26749003E2348 /* ContactsDetailsHeaderTableViewCell.swift */,
 				95889B0B23A2672B003E2348 /* ContactsDetailsFieldTableViewCell.swift */,
@@ -264,9 +265,8 @@
 		9590B40923A150F400971DB0 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				951F048123A1582900B21B50 /* Indentifiers.swift */,
-				9529A68D23A351EE002224D9 /* TextLog.swift */,
-				9529A69123A3A184002224D9 /* String.swift */,
+				9529A69123A3A184002224D9 /* StringExtension.swift */,
+				9529A69623A3BBF5002224D9 /* ViewControllerExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -516,16 +516,16 @@
 				951F048423A1589700B21B50 /* ContactsTableViewCell.swift in Sources */,
 				9590B40323A126C800971DB0 /* NetworkManager.swift in Sources */,
 				95889B0A23A26416003E2348 /* ContactsDetailsViewController.swift in Sources */,
-				9529A69223A3A185002224D9 /* String.swift in Sources */,
-				951F048223A1582900B21B50 /* Indentifiers.swift in Sources */,
+				9529A69223A3A185002224D9 /* StringExtension.swift in Sources */,
+				951F048223A1582900B21B50 /* TableViewCellIndentifiers.swift in Sources */,
 				9590B3D723A1223600971DB0 /* ContactsViewController.swift in Sources */,
 				9590B3D323A1223600971DB0 /* AppDelegate.swift in Sources */,
+				9529A69723A3BBF5002224D9 /* ViewControllerExtension.swift in Sources */,
 				95889B0423A18668003E2348 /* ContactNetworkService.swift in Sources */,
 				9590B3D523A1223600971DB0 /* SceneDelegate.swift in Sources */,
 				95889B0C23A2672B003E2348 /* ContactsDetailsFieldTableViewCell.swift in Sources */,
 				951F048623A1596200B21B50 /* Contact.swift in Sources */,
 				95889B0623A22684003E2348 /* NetworkRouter.swift in Sources */,
-				9529A68E23A351EE002224D9 /* TextLog.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

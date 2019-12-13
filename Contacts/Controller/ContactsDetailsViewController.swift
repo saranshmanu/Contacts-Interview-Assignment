@@ -142,8 +142,25 @@ class ContactsDetailsViewController: UIViewController {
         tableView.rowHeight = UITableView.automaticDimension
     }
     
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            if self.view.frame.origin.y == 0 {
+                self.view.frame.origin.y -= keyboardSize.height
+            }
+        }
+    }
+
+    @objc func keyboardWillHide(notification: NSNotification) {
+        if self.view.frame.origin.y != 0 {
+            self.view.frame.origin.y = 0
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        hideKeyboardWhenTappedAround()
+        NotificationCenter.default.addObserver(self, selector: #selector(ContactsDetailsViewController.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ContactsDetailsViewController.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         newContactInformation = Contact()
         newContactInformation?.uuid = contact!.uuid
         newContactInformation?.firstName = contact!.firstName

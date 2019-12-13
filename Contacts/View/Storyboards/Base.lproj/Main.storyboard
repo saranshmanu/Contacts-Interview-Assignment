@@ -317,11 +317,11 @@
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="First Name" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XTI-zK-2yd">
-                                                    <rect key="frame" x="24" y="18.5" width="103" height="19.5"/>
+                                                    <rect key="frame" x="24" y="19.5" width="103" height="17"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="103" id="qfO-PK-5UC"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <color key="textColor" name="ThemeGrey"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
