@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import UIKit
 import RealmSwift
 
 protocol ContactsResultServiceDelegate {
@@ -16,21 +15,20 @@ protocol ContactsResultServiceDelegate {
 
 class ContactsResultService {
     
+    public var delegate: ContactsResultServiceDelegate?
+    
     enum NetworkStatus: String {
         case starting = "starting"
         case completed = "completed"
     }
 
     static var contactUpdateBuffer = [Contact]()
-    public var delegate: ContactsResultServiceDelegate?
     static var refreshStatus: NetworkStatus = .completed {
         didSet {
-            if refreshStatus == .completed {
-                if !contactUpdateBuffer.isEmpty {
-                    let updatedContacts = ContactsResultService.contactUpdateBuffer
-                    for flag in updatedContacts {
-                        ContactsResultService().updateContactDetails(with: flag.uuid, data: flag)
-                    }
+            if refreshStatus == .completed && !contactUpdateBuffer.isEmpty {
+                let updatedContacts = ContactsResultService.contactUpdateBuffer
+                for flag in updatedContacts {
+                    ContactsResultService().updateContactDetails(with: flag.uuid, data: flag)
                 }
             }
         }
@@ -103,6 +101,16 @@ class ContactsResultService {
         return flag
     }
     
+    private func createContactJSON(data: Contact) -> [String: Any] {
+        return [
+            "first_name": data.firstName as String,
+            "last_name": data.lastName as String,
+            "phone_number": data.phoneNumber as String,
+            "favorite": data.isFavourite as Bool,
+            "email": data.email as String
+        ] as [String : Any]
+    }
+    
     func parseContact(data: NSDictionary, completion: @escaping (Any?) -> ()) {
         let uuid = data["id"] as! Int
         getContactDetails(uuid: uuid) { (error, result) in
@@ -126,16 +134,6 @@ class ContactsResultService {
         }
     }
     
-    private func getRequestJSON(data: Contact) -> [String: Any] {
-        return [
-            "first_name": data.firstName as String,
-            "last_name": data.lastName as String,
-            "phone_number": data.phoneNumber as String,
-            "favorite": data.isFavourite as Bool,
-            "email": data.email as String
-        ] as [String : Any]
-    }
-    
     func updateContactDetails(with uuid: Int, data: Contact) {
         let realm = try! Realm()
         let query = realm.objects(Contact.self).filter("uuid == \(uuid)").first
@@ -150,7 +148,7 @@ class ContactsResultService {
         } else {
             let server = NetworkManager()
             server.uuid = data.uuid
-            server.request(service: .putContactDetails, parameters: getRequestJSON(data: data)) { (error, result) in
+            server.request(service: .putContactDetails, parameters: createContactJSON(data: data)) { (error, result) in
                 if error == false {
                     print("Updated the value with uuid: \(data.uuid)")
                 } else {
@@ -161,7 +159,7 @@ class ContactsResultService {
     }
     
     func createContactDetails(data: Contact) {
-        NetworkManager().request(service: .postContactDetails, parameters: getRequestJSON(data: data)) { (error, result) in
+        NetworkManager().request(service: .postContactDetails, parameters: createContactJSON(data: data)) { (error, result) in
             if error == false {
                 if let data: NSDictionary = result as? NSDictionary {
                     let contact = self.parseContactJSON(contact: data)

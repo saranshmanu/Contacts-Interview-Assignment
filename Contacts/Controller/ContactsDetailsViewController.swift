@@ -16,23 +16,62 @@ enum ContactsDetailsMode: String {
 }
 
 class ContactsDetailsViewController: UIViewController {
+    
+    enum InvalidTextFieldCode: String {
+        case firstNameEmpty = "First name cannot be left blank"
+        case lastNameEmpty = "Last name cannot be left blank"
+        case firstNameShort = "First name is too short (minimum is 2 characters)"
+        case lastNameShort = "Last name is too short (minimum is 2 characters)"
+        case emailFormatInvalid = "Invalid email address"
+        case phoneNumberFormatInvalid = "Invalid phone number"
+    }
 
     @IBOutlet weak var editDetailsButton: UIBarButtonItem!
     @IBAction func editDetailsAction(_ sender: Any) {
         switch mode {
             case .normal:
-                mode = .editing
-                editDetailsButton.title = "Done"
+                    mode = .editing
+                    editDetailsButton.title = "Done"
             case .editing:
-                updateContactInformation()
-                mode = .normal
-                editDetailsButton.title = "Edit"
+                if checkFields().isEmpty {
+                    updateContactInformation()
+                    mode = .normal
+                    editDetailsButton.title = "Edit"
+                } else {
+                    alertForInvalidTextFields()
+                    break
+                }
             case .adding:
-                saveContactInformation()
-                mode = .normal
-                editDetailsButton.isEnabled = false
+                if checkFields().isEmpty {
+                    saveContactInformation()
+                    mode = .normal
+                    editDetailsButton.isEnabled = false
+                } else {
+                    alertForInvalidTextFields()
+                    break
+                }
         }
         tableView.reloadSections(IndexSet(arrayLiteral: 0), with: .fade)
+    }
+    
+    func alertForInvalidTextFields() {
+        let codes = checkFields()
+        var message = ""
+        for i in 0..<codes.count {
+            message += "\(i+1)) \(codes[i].rawValue)\n"
+        }
+        let alert = UIAlertController(title: "Please make the following changes", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Back", style: .default, handler: nil))
+        self.present(alert, animated: true)
+    }
+    
+    func checkFields() -> [InvalidTextFieldCode] {
+        var codes = [InvalidTextFieldCode]()
+        (newContactInformation?.lastName.isEmpty)! ? codes.append(.firstNameEmpty) : (newContactInformation?.firstName.count)! < 2 ? codes.append(.firstNameShort) : ()
+        (newContactInformation?.firstName.isEmpty)! ? codes.append(.lastNameEmpty) : (newContactInformation?.lastName.count)! < 2 ? codes.append(.lastNameShort) : ()
+        !(newContactInformation?.email.isEmpty)! && !(newContactInformation?.email.isValidEmail)! ? codes.append(.emailFormatInvalid) : ()
+        !(newContactInformation?.phoneNumber.isEmpty)! && !(newContactInformation?.phoneNumber.isValidContact)! ? codes.append(.phoneNumberFormatInvalid) : ()
+        return codes
     }
     
     func initDataFields() {
