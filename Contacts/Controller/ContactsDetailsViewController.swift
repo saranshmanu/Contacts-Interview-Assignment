@@ -54,15 +54,19 @@ class ContactsDetailsViewController: UIViewController {
         tableView.reloadSections(IndexSet(arrayLiteral: 0), with: .fade)
     }
     
+    func showAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Back", style: .default, handler: nil))
+        self.present(alert, animated: true)
+    }
+    
     func alertForInvalidTextFields() {
         let codes = checkFields()
         var message = ""
         for i in 0..<codes.count {
             message += "\(i+1)) \(codes[i].rawValue)\n"
         }
-        let alert = UIAlertController(title: "Please make the following changes", message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Back", style: .default, handler: nil))
-        self.present(alert, animated: true)
+        showAlert(title: "Error", message: message)
     }
     
     func checkFields() -> [InvalidTextFieldCode] {
@@ -79,40 +83,48 @@ class ContactsDetailsViewController: UIViewController {
         if contact?.firstName != "" {
             dataFields.append([
                 "type": "First Name",
-                "data": contact?.firstName as Any
+                "data": contact?.firstName as Any,
+                "placeholder": "Raghav"
             ])
         }
         if contact?.lastName != "" {
             dataFields.append([
                 "type": "Last Name",
-                "data": contact?.lastName as Any
+                "data": contact?.lastName as Any,
+                "placeholder": "Gupta"
             ])
         }
         if contact?.email != "" {
             dataFields.append([
                 "type": "Email",
-                "data": contact?.email as Any
+                "data": contact?.email as Any,
+                "placeholder": "raghav.gupta@gmail.com"
             ])
         }
         if contact?.phoneNumber != "" {
             dataFields.append([
                 "type": "Phone Number",
-                "data": contact?.phoneNumber as Any
+                "data": contact?.phoneNumber as Any,
+                "placeholder": "99998888XX"
             ])
         }
         editingFields = [
             [
                 "type": "First Name",
-                "data": contact?.firstName as Any
+                "data": contact?.firstName as Any,
+                "placeholder": "Raghav"
             ],[
                 "type": "Last Name",
-                "data": contact?.lastName as Any
+                "data": contact?.lastName as Any,
+                "placeholder": "Gupta"
             ],[
                 "type": "Email",
-                "data": contact?.email as Any
+                "data": contact?.email as Any,
+                "placeholder": "raghav.gupta@gmail.com"
             ],[
                 "type": "Phone Number",
-                "data": contact?.phoneNumber as Any
+                "data": contact?.phoneNumber as Any,
+                "placeholder": "99998888XX"
             ]
         ]
     }
@@ -169,13 +181,13 @@ extension ContactsDetailsViewController: UITableViewDelegate, UITableViewDataSou
             switch mode {
             case .editing:
                 let field = editingFields[indexPath.row - 1] as NSDictionary
-                fieldCell.configure(type: field["type"] as! String, data: field["data"] as! String, mode: mode)
+                fieldCell.configure(type: field["type"] as! String, data: field["data"] as! String, mode: mode, placeholder: field["placeholder"] as! String)
             case .adding:
                 let field = editingFields[indexPath.row - 1] as NSDictionary
-                fieldCell.configure(type: field["type"] as! String, data: field["data"] as! String, mode: mode)
+                fieldCell.configure(type: field["type"] as! String, data: field["data"] as! String, mode: mode, placeholder: field["placeholder"] as! String)
             default:
                 let field = dataFields[indexPath.row - 1] as NSDictionary
-                fieldCell.configure(type: field["type"] as! String, data: field["data"] as! String, mode: mode)
+                fieldCell.configure(type: field["type"] as! String, data: field["data"] as! String, mode: mode, placeholder: field["placeholder"] as! String)
             }
             fieldCell.selectionStyle = .none
             return fieldCell
@@ -183,7 +195,8 @@ extension ContactsDetailsViewController: UITableViewDelegate, UITableViewDataSou
     }
 }
 
-extension ContactsDetailsViewController: ContactsDetailsHeaderTableViewCellDelegate {
+extension ContactsDetailsViewController: ContactsDetailsHeaderTableViewCellDelegate, MFMailComposeViewControllerDelegate, MFMessageComposeViewControllerDelegate {
+    
     func performActivity(activity: Activity) {
         switch activity {
         case .call:
@@ -191,9 +204,12 @@ extension ContactsDetailsViewController: ContactsDetailsHeaderTableViewCellDeleg
             UIApplication.shared.open(number)
         case .email:
             // checking if we can send the email throught the application
+            if (contact?.email.isEmpty)! {
+                self.showAlert(title: "Alert", message: "No email address found. Cannot send the message.")
+            }
             if MFMailComposeViewController.canSendMail() {
                 let mail = MFMailComposeViewController()
-                mail.mailComposeDelegate = self as? MFMailComposeViewControllerDelegate
+                mail.mailComposeDelegate = self
                 mail.setToRecipients([contact!.email])
                 mail.setMessageBody("Sent from iPhone<BR>\(contact?.firstName ?? "")", isHTML: true)
                 present(mail, animated: true)
@@ -203,11 +219,14 @@ extension ContactsDetailsViewController: ContactsDetailsHeaderTableViewCellDeleg
             }
         case .message:
             // checking if we can send the message throught the application
+            if (contact?.phoneNumber.isEmpty)! {
+                self.showAlert(title: "Alert", message: "No phone number found. Cannot send the message.")
+            }
             if MFMessageComposeViewController.canSendText() {
                 let message = MFMessageComposeViewController()
-                message.body = ""
+                message.messageComposeDelegate = self
                 message.recipients = ["\(contact?.phoneNumber ?? "")"]
-                message.messageComposeDelegate = self as? MFMessageComposeViewControllerDelegate
+                message.body = ""
                 self.present(message, animated: true, completion: nil)
             }
             else{
@@ -224,25 +243,26 @@ extension ContactsDetailsViewController: ContactsDetailsHeaderTableViewCellDeleg
         }
     }
     
-    func messageComposeViewController(controller: MFMessageComposeViewController!, didFinishWithResult result: MessageComposeResult) {
-        controller.dismiss(animated: true)
+    func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
+        controller.dismiss(animated: true, completion: nil)
     }
+    
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
-        controller.dismiss(animated: true)
+        controller.dismiss(animated: true, completion: nil)
     }
 }
 
 extension ContactsDetailsViewController: ContactsDetailsFieldTableViewCellDelegate {
     
     func saveContactInformation() {
-        ContactsResultService().createContactDetails(data: newContactInformation!)
+        ContactNetworkService().createContactDetails(data: newContactInformation!)
         contact = newContactInformation!
         initDataFields()
     }
     
     func updateContactInformation() {
-        ContactsResultService().updateContactDetails(with: newContactInformation!.uuid, data: newContactInformation!)
-        contact = ContactsResultService().getData(with: contact!.uuid)
+        ContactNetworkService().updateContactDetails(with: newContactInformation!.uuid, data: newContactInformation!)
+        contact = ContactNetworkService().getData(with: contact!.uuid)
         initDataFields()
     }
     

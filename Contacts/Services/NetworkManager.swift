@@ -58,11 +58,10 @@ class NetworkManager {
         
     }
         
+    // fetch the image from the internet
     public func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
         URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
     }
-    
-    // fetch the image from the internet
     public func downloadImage(from url: URL, completion: @escaping (UIImage?) -> ()) {
         var image: UIImage?
         getData(from: url) { data, response, error in

@@ -1,5 +1,5 @@
 //
-//  ContactsResultService.swift
+//  ContactNetworkService.swift
 //  Contacts
 //
 //  Created by Saransh Mittal on 12/12/19.
@@ -9,13 +9,13 @@
 import Foundation
 import RealmSwift
 
-protocol ContactsResultServiceDelegate {
+protocol ContactNetworkServiceDelegate {
     func refresh(status: Bool)
 }
 
-class ContactsResultService {
+class ContactNetworkService {
     
-    public var delegate: ContactsResultServiceDelegate?
+    public var delegate: ContactNetworkServiceDelegate?
     
     enum NetworkStatus: String {
         case starting = "starting"
@@ -26,9 +26,9 @@ class ContactsResultService {
     static var refreshStatus: NetworkStatus = .completed {
         didSet {
             if refreshStatus == .completed && !contactUpdateBuffer.isEmpty {
-                let updatedContacts = ContactsResultService.contactUpdateBuffer
+                let updatedContacts = ContactNetworkService.contactUpdateBuffer
                 for flag in updatedContacts {
-                    ContactsResultService().updateContactDetails(with: flag.uuid, data: flag)
+                    ContactNetworkService().updateContactDetails(with: flag.uuid, data: flag)
                 }
             }
         }
@@ -42,19 +42,19 @@ class ContactsResultService {
     }
     
     func refreshContactDetails() {
-        ContactsResultService.refreshStatus = .starting
+        ContactNetworkService.refreshStatus = .starting
         NetworkManager().request(service: .getContact) { (error, result) in
             if let data: [NSDictionary] = result as? [NSDictionary] {
                 // starting the process to get all contact details
                 self.parseContactList(result: data) { result in
                     let contactList = result as! [Contact]
                     self.saveData(contactList: contactList)
-                    ContactsResultService.refreshStatus = .completed
+                    ContactNetworkService.refreshStatus = .completed
                     self.delegate?.refresh(status: true)
                 }
             } else {
                 // failed to update the contact list
-                ContactsResultService.refreshStatus = .completed
+                ContactNetworkService.refreshStatus = .completed
                 self.delegate?.refresh(status: false)
             }
         }
@@ -143,8 +143,8 @@ class ContactsResultService {
             query?.email = data.email
             query?.phoneNumber = data.phoneNumber
         }
-        if ContactsResultService.refreshStatus == .starting {
-            ContactsResultService.contactUpdateBuffer.append(data)
+        if ContactNetworkService.refreshStatus == .starting {
+            ContactNetworkService.contactUpdateBuffer.append(data)
         } else {
             let server = NetworkManager()
             server.uuid = data.uuid
