@@ -200,6 +200,9 @@ extension ContactsDetailsViewController: ContactsDetailsHeaderTableViewCellDeleg
     func performActivity(activity: Activity) {
         switch activity {
         case .call:
+            if (contact?.phoneNumber.isEmpty)! {
+                self.showAlert(title: "Alert", message: "No phone number found. Cannot place a call to the number.")
+            }
             guard let number = URL(string: "tel://" + contact!.phoneNumber) else { return }
             UIApplication.shared.open(number)
         case .email:
