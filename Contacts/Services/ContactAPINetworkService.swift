@@ -174,7 +174,7 @@ class ContactAPINetworkService {
         return flag
     }
     
-    private func createContactJSON(data: Contact) -> [String: Any] {
+    func createContactJSON(data: Contact) -> [String: Any] {
         return [
             "first_name": data.firstName as String,
             "last_name": data.lastName as String,

@@ -8,16 +8,17 @@
 
 import XCTest
 @testable import Contacts
-import RealmSwift
 
-class ContactsNetworkManagerTests: XCTestCase {
+class NetworkManagerTests: XCTestCase {
+    
+    var mockUUID: Int? = nil
+    var contactsServerAPI: ContactAPINetworkService? = nil
     
     func testRefreshContactListSuccessReturnsContactList() {
-        let contactsServerAPI = ContactAPINetworkService()
         let contactsExpectation = expectation(description: "Get contact list")
         var contactsResponse: [Contact]?
         
-        contactsServerAPI.refreshContactDetails(completion: { result in
+        contactsServerAPI?.refreshContactDetails(completion: { result in
             if let data: [Contact] = result as? [Contact] {
                 contactsResponse = data
                 contactsExpectation.fulfill()
@@ -29,10 +30,9 @@ class ContactsNetworkManagerTests: XCTestCase {
     }
     
     func testGetContactSuccessReturnsContact() {
-        let contactsServerAPI = ContactAPINetworkService()
         let contactsExpectation = expectation(description: "Get contact detail for UUID")
         var contactsResponse: Contact?
-        contactsServerAPI.getContactDetails(uuid: 13446) { (error, result) in
+        contactsServerAPI?.getContactDetails(uuid: 13446) { (error, result) in
             if let contact: Contact = result as? Contact {
                 contactsResponse = contact
                 contactsExpectation.fulfill()
@@ -43,7 +43,7 @@ class ContactsNetworkManagerTests: XCTestCase {
         }
     }
     
-    func getMockData() -> Contact {
+    func getMockContactData() -> Contact {
         let mockContactData = Contact()
         mockContactData.firstName = "Narendra"
         mockContactData.lastName = "Modi"
@@ -53,15 +53,24 @@ class ContactsNetworkManagerTests: XCTestCase {
         return mockContactData
     }
     
+    func getMockContactJSON() -> NSDictionary {
+        return [
+          "first_name": "Narendra",
+          "last_name": "Modi",
+          "phone_number": "9999888876",
+          "favorite": false,
+          "email": "test.case@example.com"
+        ]
+    }
+    
     func testCreateContactDetailsSuccessReturnsCreatedContact() {
-        let mockData = getMockData()
-        let contactsServerAPI = ContactAPINetworkService()
+        let mockData = getMockContactData()
         let contactsExpectation = expectation(description: "Create new contact")
         var contactsResponse = Contact()
-        contactsServerAPI.createContactDetails(data: mockData) { (response) in
+        contactsServerAPI?.createContactDetails(data: mockData) { (response) in
             if let contact: Contact = response as? Contact {
                 mockData.uuid = contact.uuid
-                contactsServerAPI.getContactDetails(uuid: contact.uuid) { (error, result) in
+                self.contactsServerAPI?.getContactDetails(uuid: contact.uuid) { (error, result) in
                     if let data: Contact = result as? Contact {
                         contactsResponse = data
                         contactsExpectation.fulfill()
@@ -77,14 +86,13 @@ class ContactsNetworkManagerTests: XCTestCase {
     
     func testUpdateContactDetailsSuccessReturnsUpdatedContact() {
         let mockUUID = 14438
-        let mockData = getMockData()
+        let mockData = getMockContactData()
         mockData.uuid = mockUUID
-        let contactsServerAPI = ContactAPINetworkService()
         let contactsExpectation = expectation(description: "Update contact information")
         var contactsResponse = Contact()
-        contactsServerAPI.updateContactDetails(with: mockUUID, data: mockData) { (response) in
+        contactsServerAPI?.updateContactDetails(with: mockUUID, data: mockData) { (response) in
             if let _: Contact = response as? Contact {
-                contactsServerAPI.getContactDetails(uuid: mockUUID) { (error, result) in
+                self.contactsServerAPI?.getContactDetails(uuid: mockUUID) { (error, result) in
                     if let data: Contact = result as? Contact {
                         contactsResponse = data
                         contactsExpectation.fulfill()
@@ -100,14 +108,13 @@ class ContactsNetworkManagerTests: XCTestCase {
     
     func testAddToFavoriteContactSuccessReturnsUpdatedContact() {
         let mockUUID = 14438
-        let contactsServerAPI = ContactAPINetworkService()
         let contactsExpectation = expectation(description: "Add contact to favorites")
         var orignalContactsResponse = Contact()
         var updatedContactsResponse = Contact()
-        contactsServerAPI.getContactDetails(uuid: mockUUID) { (error, result) in
+        contactsServerAPI?.getContactDetails(uuid: mockUUID) { (error, result) in
             if let data: Contact = result as? Contact {
                 orignalContactsResponse = data
-                contactsServerAPI.updateContactFavoriteStatus(to: !orignalContactsResponse.isFavourite, uuid: orignalContactsResponse.uuid, completion: { response in
+                self.contactsServerAPI?.updateContactFavoriteStatus(to: !orignalContactsResponse.isFavourite, uuid: orignalContactsResponse.uuid, completion: { response in
                     if let contact: Contact = response as? Contact {
                         updatedContactsResponse = contact
                         contactsExpectation.fulfill()
@@ -122,9 +129,31 @@ class ContactsNetworkManagerTests: XCTestCase {
             XCTAssertFalse(orignalContactsResponse==updatedContactsResponse)
         }
     }
+    
+    func testParseContactJSON() {
+        let contactsExpectation = expectation(description: "Parse contact JSON")
+        let parsedContact: Contact = (contactsServerAPI?.parseContactJSON(contact: getMockContactJSON()))!
+        contactsExpectation.fulfill()
+        waitForExpectations(timeout: 10) { (error) in
+            XCTAssertNotNil(parsedContact)
+            XCTAssertTrue(parsedContact==self.getMockContactData())
+            XCTAssertFalse(parsedContact==Contact())
+        }
+    }
+    
+    func testCreateContactJSON() {
+        let contactsExpectation = expectation(description: "Parse contact JSON")
+        let contactJSON = contactsServerAPI?.createContactJSON(data: getMockContactData())
+        contactsExpectation.fulfill()
+        waitForExpectations(timeout: 10) { (error) in
+            XCTAssertNotNil(contactJSON)
+            XCTAssertTrue(self.getMockContactJSON() == contactJSON! as NSDictionary)
+        }
+    }
 
     override func setUp() {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        mockUUID = 14438
+        contactsServerAPI = ContactAPINetworkService()
     }
 
     override func tearDown() {
