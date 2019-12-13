@@ -255,7 +255,7 @@ extension ContactsDetailsViewController: ContactsDetailsHeaderTableViewCellDeleg
         default:
             let status: Bool?
             contact!.isFavourite ? (status = false) : (status = true)
-            ContactAPINetworkService().addContactFavoriteStatus(to: status!, uuid: contact!.uuid)
+            ContactAPINetworkService().updateContactFavoriteStatus(to: status!, uuid: contact!.uuid)
             contact = ContactAPINetworkService().getData(with: contact!.uuid)
         }
     }

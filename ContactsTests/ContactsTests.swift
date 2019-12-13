@@ -8,8 +8,48 @@
 
 import XCTest
 @testable import Contacts
+import RealmSwift
 
-class ContactsTests: XCTestCase {
+class ContactsNetworkManagerTests: XCTestCase {
+    
+    func testRefreshDataSuccessReturnsContactList() {
+        let server = NetworkManager()
+        let contactsServerAPI = ContactAPINetworkService()
+        let contactsExpectation = expectation(description: "contacts")
+        var contactsResponse: [Contact]?
+        
+        server.request(service: .getContact) { (error, result) in
+            if let data: [NSDictionary] = result as? [NSDictionary] {
+                contactsServerAPI.parseContactList(result: data) { result in
+                    let contactList = result as! [Contact]
+                    contactsResponse = contactList
+                    contactsExpectation.fulfill()
+                }
+            }
+        }
+        waitForExpectations(timeout: 220) { (error) in
+            XCTAssertNotNil(contactsResponse)
+        }
+    }
+    
+    func testGetContactSuccessReturnsContact() {
+        let contactsServerAPI = ContactAPINetworkService()
+        let contactsExpectation = expectation(description: "contactDetails")
+        var contactsResponse: Contact?
+        contactsServerAPI.getContactDetails(uuid: 13446) { (error, result) in
+            if let contact: Contact = result as? Contact {
+                contactsResponse = contact
+                contactsExpectation.fulfill()
+            }
+        }
+        waitForExpectations(timeout: 10) { (error) in
+            XCTAssertNotNil(contactsResponse)
+        }
+    }
+    
+    func testCreateContactDetailsSuccessReturnsContact() {
+//        let mockContactDetails =
+    }
 
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -17,18 +57,6 @@ class ContactsTests: XCTestCase {
 
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
     }
 
 }
