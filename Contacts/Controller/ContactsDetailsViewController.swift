@@ -255,7 +255,7 @@ extension ContactsDetailsViewController: ContactsDetailsHeaderTableViewCellDeleg
         default:
             let status: Bool?
             contact!.isFavourite ? (status = false) : (status = true)
-            ContactAPINetworkService().updateContactFavoriteStatus(to: status!, uuid: contact!.uuid)
+            ContactAPINetworkService().updateContactFavoriteStatus(to: status!, uuid: contact!.uuid, completion: {_ in })
             contact = ContactAPINetworkService().getData(with: contact!.uuid)
         }
     }
@@ -272,13 +272,21 @@ extension ContactsDetailsViewController: ContactsDetailsHeaderTableViewCellDeleg
 extension ContactsDetailsViewController: ContactsDetailsFieldTableViewCellDelegate {
     
     func saveContactInformation() {
-        ContactAPINetworkService().createContactDetails(data: newContactInformation!)
-        contact = newContactInformation!
+        ContactAPINetworkService().createContactDetails(data: newContactInformation!, completion: { (response) in
+            if let _: Contact = response as? Contact {
+                // successfully created contact
+            }
+        })
+        self.contact = newContactInformation!
         initDataFields()
     }
     
     func updateContactInformation() {
-        ContactAPINetworkService().updateContactDetails(with: newContactInformation!.uuid, data: newContactInformation!)
+        ContactAPINetworkService().updateContactDetails(with: newContactInformation!.uuid, data: newContactInformation!, completion: { (response) in
+            if let _: Contact = response as? Contact {
+                // successfully updated contact
+            }
+        })
         contact = ContactAPINetworkService().getData(with: contact!.uuid)
         initDataFields()
     }

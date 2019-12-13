@@ -22,4 +22,13 @@ class Contact: Object {
     override class func primaryKey() -> String? {
         return "uuid"
     }
+    
+    static func ==(first: Contact, second: Contact) -> Bool {
+      return (first.uuid == second.uuid)
+        && (first.firstName == second.firstName)
+        && (first.lastName == second.lastName)
+        && (first.email == second.email)
+        && (first.phoneNumber == second.phoneNumber)
+        && (first.isFavourite == second.isFavourite)
+    }
 }

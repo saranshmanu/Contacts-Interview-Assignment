@@ -8,11 +8,19 @@
 
 import UIKit
 
-class ContactsViewController: UIViewController, ContactNetworkServiceDelegate {
+class ContactsViewController: UIViewController {
     
     @IBAction func addContactsAction(_ sender: Any) {
         self.performSegue(withIdentifier: "AddContactSegue", sender: self)
     }
+
+    @IBOutlet weak var tableView: UITableView!
+    var contacts = [Contact]()
+    var contactsDictionary = [String: [Contact]]()
+    var contactsSectionTitles = [String]()
+    var selectedUUID: Int = 0
+    var contactsResultService: ContactAPINetworkService?
+    var refreshControl: UIRefreshControl!
     
     func refresh(status: Bool) {
         if status == true {
@@ -24,17 +32,14 @@ class ContactsViewController: UIViewController, ContactNetworkServiceDelegate {
         refreshControl.endRefreshing()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        refresh(status: true)
-    }
-    
-    var contacts = [Contact]()
-    var contactsDictionary = [String: [Contact]]()
-    var contactsSectionTitles = [String]()
-    var selectedUUID: Int = 0
-    
     @objc func fetchData() {
-        contactsResultService?.refreshContactDetails()
+        contactsResultService?.refreshContactDetails(completion: { response in
+            if let _: [Contact] = response as? [Contact] {
+                self.refresh(status: true)
+            } else {
+                self.refresh(status: false)
+            }
+        })
     }
     
     func initTableView() {
@@ -63,18 +68,13 @@ class ContactsViewController: UIViewController, ContactNetworkServiceDelegate {
         contactsSectionTitles = contactsSectionTitles.sorted(by: { $0 < $1 })
     }
     
-    func initContactsResultService() {
-        contactsResultService = ContactAPINetworkService()
-        contactsResultService?.delegate = self
+    override func viewWillAppear(_ animated: Bool) {
+        refresh(status: true)
     }
-
-    var contactsResultService: ContactAPINetworkService?
-    @IBOutlet weak var tableView: UITableView!
-    var refreshControl: UIRefreshControl!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        initContactsResultService()
+        contactsResultService = ContactAPINetworkService()
         initTableView()
         refresh(status: true)
     }
@@ -117,10 +117,10 @@ extension ContactsViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         let flag = contactsSectionTitles[indexPath.section]
         let contacts: [Contact] = contactsDictionary[flag]!
         selectedUUID = contacts[indexPath.row].uuid
-        tableView.deselectRow(at: indexPath, animated: true)
         self.performSegue(withIdentifier: "ContactsDetailsSegue", sender: self)
     }
     

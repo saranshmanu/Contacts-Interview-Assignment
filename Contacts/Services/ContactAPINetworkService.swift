@@ -9,13 +9,7 @@
 import Foundation
 import RealmSwift
 
-protocol ContactNetworkServiceDelegate {
-    func refresh(status: Bool)
-}
-
 class ContactAPINetworkService {
-    
-    public var delegate: ContactNetworkServiceDelegate?
     
     enum NetworkStatus: String {
         case starting = "starting"
@@ -28,28 +22,30 @@ class ContactAPINetworkService {
             if refreshStatus == .completed && !contactUpdateBuffer.isEmpty {
                 let updatedContacts = ContactAPINetworkService.contactUpdateBuffer
                 for flag in updatedContacts {
-                    ContactAPINetworkService().updateContactDetails(with: flag.uuid, data: flag)
+                    ContactAPINetworkService().updateContactDetails(with: flag.uuid, data: flag, completion: { (response) in
+                        if let _: Contact = response as? Contact {
+                            // successfully updated contact
+                        }
+                    })
                 }
             }
         }
     }
     
     // get all contact list from the server
-    func refreshContactDetails() {
+    func refreshContactDetails(completion: @escaping (Any?) -> ()) {
         ContactAPINetworkService.refreshStatus = .starting
         NetworkManager().request(service: .getContact) { (error, result) in
             if let data: [NSDictionary] = result as? [NSDictionary] {
-                // starting the process to get all contact details
                 self.parseContactList(result: data) { result in
                     let contactList = result as! [Contact]
                     self.saveData(contactList: contactList)
                     ContactAPINetworkService.refreshStatus = .completed
-                    self.delegate?.refresh(status: true)
+                    completion(contactList)
                 }
             } else {
-                // failed to update the contact list
                 ContactAPINetworkService.refreshStatus = .completed
-                self.delegate?.refresh(status: false)
+                completion(nil)
             }
         }
     }
@@ -86,7 +82,7 @@ class ContactAPINetworkService {
     }
     
     // update the contact favourite statust
-    func updateContactFavoriteStatus(to status: Bool, uuid: Int) {
+    func updateContactFavoriteStatus(to status: Bool, uuid: Int, completion: @escaping (Any?) -> ()) {
         let realm = try! Realm()
         let query = realm.objects(Contact.self).filter("uuid == \(uuid)").first
         try! realm.write {
@@ -101,16 +97,19 @@ class ContactAPINetworkService {
             server.uuid = uuid
             server.request(service: .putContactDetails, parameters: createContactJSON(data: data)) { (error, result) in
                 if error == false {
-                    print("Updated the value with uuid: \(data.uuid)")
+                    if let contact: NSDictionary = result as? NSDictionary {
+                        let response = self.parseContactJSON(contact: contact)
+                        completion(response)
+                    }
                 } else {
-                    print("Error for updating the value with uuid: \(data.uuid)")
+                    completion(nil)
                 }
             }
         }
     }
     
     // update the new contact information
-    func updateContactDetails(with uuid: Int, data: Contact) {
+    func updateContactDetails(with uuid: Int, data: Contact, completion: @escaping (Any?) -> ()) {
         let realm = try! Realm()
         let query = realm.objects(Contact.self).filter("uuid == \(uuid)").first
         try! realm.write {
@@ -126,25 +125,28 @@ class ContactAPINetworkService {
             server.uuid = data.uuid
             server.request(service: .putContactDetails, parameters: createContactJSON(data: data)) { (error, result) in
                 if error == false {
-                    print("Updated the value with uuid: \(data.uuid)")
+                    if let contact: NSDictionary = result as? NSDictionary {
+                        let response = self.parseContactJSON(contact: contact)
+                        completion(response)
+                    }
                 } else {
-                    print("Error for updating the value with uuid: \(data.uuid)")
+                    completion(nil)
                 }
             }
         }
     }
     
     // create a new contact
-    func createContactDetails(data: Contact) {
+    func createContactDetails(data: Contact, completion: @escaping (Any?) -> ()) {
         NetworkManager().request(service: .postContactDetails, parameters: createContactJSON(data: data)) { (error, result) in
             if error == false {
                 if let data: NSDictionary = result as? NSDictionary {
                     let contact = self.parseContactJSON(contact: data)
                     self.saveData(contactList: [contact])
-                    print("Created the value with uuid: \(contact.uuid)")
+                    completion(contact)
                 }
             } else {
-                print("Error for creating the value")
+                completion(nil)
             }
         }
     }
