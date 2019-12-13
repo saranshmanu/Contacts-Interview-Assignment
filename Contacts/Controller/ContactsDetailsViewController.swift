@@ -45,21 +45,6 @@ class ContactsDetailsViewController: UIViewController {
         tableView.reloadSections(IndexSet(arrayLiteral: 0), with: .fade)
     }
     
-    func showAlert(title: String, message: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Back", style: .default, handler: nil))
-        self.present(alert, animated: true)
-    }
-    
-    func alertForInvalidTextFields() {
-        let codes: [Contact.InvalidTextFieldCode] = newContactInformation!.checkInvalidTextFields()
-        var message = ""
-        for i in 0..<codes.count {
-            message += "\(i+1)) \(codes[i].rawValue)\n"
-        }
-        showAlert(title: "Error", message: message)
-    }
-    
     func initDataFields() {
         dataFields.removeAll()
         if contact?.firstName != "" {
@@ -109,6 +94,22 @@ class ContactsDetailsViewController: UIViewController {
                 "placeholder": "99998888XX"
             ]
         ]
+    }
+    
+    
+    func showAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Back", style: .default, handler: nil))
+        self.present(alert, animated: true)
+    }
+    
+    func alertForInvalidTextFields() {
+        let codes: [Contact.InvalidTextFieldCode] = newContactInformation!.checkInvalidTextFields()
+        var message = ""
+        for i in 0..<codes.count {
+            message += "\(i+1)) \(codes[i].rawValue)\n"
+        }
+        showAlert(title: "Error", message: message)
     }
     
     @IBOutlet weak var tableView: UITableView!
@@ -161,7 +162,7 @@ extension ContactsDetailsViewController: UITableViewDelegate, UITableViewDataSou
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch mode {
             case .editing   : return 1 + editingFields.count
-            case .adding   : return 1 + editingFields.count
+            case .adding    : return 1 + editingFields.count
             default         : return 1 + dataFields.count
         }
     }
@@ -170,19 +171,27 @@ extension ContactsDetailsViewController: UITableViewDelegate, UITableViewDataSou
         switch indexPath.row {
         case 0:
             let headerCell = tableView.dequeueReusableCell(withIdentifier: Identifiers.contactsDetailsHeaderTableViewCellIdentifier, for: indexPath) as! ContactsDetailsHeaderTableViewCell
-            headerCell.configure(name: contact!.firstName + " " + contact!.lastName, mode: mode, isFavourite: contact!.isFavourite)
+            headerCell.configure(
+                name: (contact!.firstName + " " + contact!.lastName),
+                isFavourite: contact!.isFavourite,
+                mode: mode
+            )
             headerCell.selectionStyle = .none
             headerCell.delegate = self
             return headerCell
         default:
             let fieldCell = tableView.dequeueReusableCell(withIdentifier: Identifiers.contactsDetailsFieldTableViewCellIdentifier, for: indexPath) as! ContactsDetailsFieldTableViewCell
-            fieldCell.delegate = self
             var textField = NSDictionary()
             (mode == .normal) ?
                 (textField = dataFields[indexPath.row - 1] as NSDictionary) :
                 (textField = editingFields[indexPath.row - 1] as NSDictionary)
-            fieldCell.configure(type: textField["type"] as! String, data: textField["data"] as! String, mode: mode, placeholder: textField["placeholder"] as! String)
+            fieldCell.configure(
+                type: textField["type"] as! String,
+                data: textField["data"] as! String, mode: mode,
+                placeholder: textField["placeholder"] as! String
+            )
             fieldCell.selectionStyle = .none
+            fieldCell.delegate = self
             return fieldCell
         }
     }
@@ -190,41 +199,45 @@ extension ContactsDetailsViewController: UITableViewDelegate, UITableViewDataSou
 
 extension ContactsDetailsViewController: ContactsDetailsHeaderTableViewCellDelegate, MFMailComposeViewControllerDelegate, MFMessageComposeViewControllerDelegate {
     
+    func performCall(contact: Contact) {
+        if (contact.phoneNumber.isEmpty) {
+            self.showAlert(title: "Alert", message: "No phone number found. Cannot place a call to the number.")
+        }
+        guard let number = URL(string: "tel://" + contact.phoneNumber) else { return }
+        UIApplication.shared.open(number)
+    }
+    
+    func performMessage(contact: Contact) {
+        if (contact.email.isEmpty) {
+            self.showAlert(title: "Alert", message: "No email address found. Cannot send the message.")
+        }
+        if MFMailComposeViewController.canSendMail() {
+            let mail = MFMailComposeViewController()
+            mail.mailComposeDelegate = self
+            mail.setToRecipients([contact.email])
+            mail.setMessageBody("Sent from iPhone<BR>\(contact.firstName)", isHTML: true)
+            present(mail, animated: true)
+        }
+    }
+    
+    func performEmail(contact: Contact) {
+        if (contact.phoneNumber.isEmpty) {
+            self.showAlert(title: "Alert", message: "No phone number found. Cannot send the message.")
+        }
+        if MFMessageComposeViewController.canSendText() {
+            let message = MFMessageComposeViewController()
+            message.messageComposeDelegate = self
+            message.recipients = ["\(contact.phoneNumber)"]
+            message.body = ""
+            self.present(message, animated: true, completion: nil)
+        }
+    }
+    
     func performActivity(activity: Activity) {
         switch activity {
-        case .call:
-            if (contact?.phoneNumber.isEmpty)! {
-                self.showAlert(title: "Alert", message: "No phone number found. Cannot place a call to the number.")
-            }
-            guard let number = URL(string: "tel://" + contact!.phoneNumber) else { return }
-            UIApplication.shared.open(number)
-        case .email:
-            if (contact?.email.isEmpty)! {
-                self.showAlert(title: "Alert", message: "No email address found. Cannot send the message.")
-            }
-            if MFMailComposeViewController.canSendMail() {
-                let mail = MFMailComposeViewController()
-                mail.mailComposeDelegate = self
-                mail.setToRecipients([contact!.email])
-                mail.setMessageBody("Sent from iPhone<BR>\(contact?.firstName ?? "")", isHTML: true)
-                present(mail, animated: true)
-            } else {
-                // cannot send the email
-            }
-        case .message:
-            if (contact?.phoneNumber.isEmpty)! {
-                self.showAlert(title: "Alert", message: "No phone number found. Cannot send the message.")
-            }
-            if MFMessageComposeViewController.canSendText() {
-                let message = MFMessageComposeViewController()
-                message.messageComposeDelegate = self
-                message.recipients = ["\(contact?.phoneNumber ?? "")"]
-                message.body = ""
-                self.present(message, animated: true, completion: nil)
-            }
-            else{
-                // cannot send the message
-            }
+        case .call: performCall(contact: contact!)
+        case .email: performEmail(contact: contact!)
+        case .message: performMessage(contact: contact!)
         case .refresh:
             UIView.animate(withDuration: 1) {
                 self.tableView.beginUpdates()

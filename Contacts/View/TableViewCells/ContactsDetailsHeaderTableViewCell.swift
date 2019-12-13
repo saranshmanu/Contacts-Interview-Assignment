@@ -49,7 +49,7 @@ class ContactsDetailsHeaderTableViewCell: UITableViewCell {
         delegate?.performActivity(activity: .message)
     }
     
-    func configure(name: String, mode: ContactsDetailsMode, isFavourite: Bool) {
+    func configure(name: String, isFavourite: Bool, mode: ContactsDetailsMode) {
         profileUserNameLabel.text = name
         isFavourite ?
             (favoriteButton.isSelected = true) :
