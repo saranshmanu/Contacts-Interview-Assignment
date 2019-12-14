@@ -17,7 +17,6 @@ class NetworkManagerTests: XCTestCase {
     func testRefreshContactListSuccessReturnsContactList() {
         let contactsExpectation = expectation(description: "Get contact list")
         var contactsResponse: [Contact]?
-        
         contactsServerAPI?.refreshContactDetails(completion: { result in
             if let data: [Contact] = result as? [Contact] {
                 contactsResponse = data
