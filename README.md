@@ -24,4 +24,4 @@ Creating an app similar to the iOS Contacts app but with a much smaller feature 
 </ol>
 
 ### Architecture
-In this project, I'm using MVP architecture to structure the project.
+In this project, I'm using MVP architecture to structure the project. To make debugging process more efficient, I have created various UI and unit tests for the application to debug the code.
