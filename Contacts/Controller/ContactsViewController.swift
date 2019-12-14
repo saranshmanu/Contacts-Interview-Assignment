@@ -15,10 +15,10 @@ class ContactsViewController: UIViewController {
     }
 
     @IBOutlet weak var tableView: UITableView!
-    var contacts = [Contact]()
-    var contactsDictionary = [String: [Contact]]()
-    var contactsSectionTitles = [String]()
     var selectedUUID: Int = 0
+    var contacts = [Contact]()
+    var contactsSectionTitles = [String]()
+    var contactsDictionary = [String: [Contact]]()
     var contactsResultService: ContactAPINetworkService?
     var refreshControl: UIRefreshControl!
     

@@ -7,27 +7,52 @@
 //
 
 import XCTest
+@testable import Contacts
 
 class ContactsUITests: XCTestCase {
 
     override func setUp() {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-
-        // In UI tests it is usually best to stop immediately when a failure occurs.
         continueAfterFailure = false
-
-        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
     }
 
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+
+    }
+    
+    func testChangeFavoriteContactStatus() {
+        
+    }
+    
+    func testCreateContactInformation() {
+        
     }
 
-    func testExample() {
-        // UI tests must launch the application that they test.
+    func testEditContactInformation() {
+        let updatedFirstName = "Amit"
+        let updatedLastName = "Shah"
+        let fullName = "\(updatedFirstName) \(updatedLastName)"
         let app = XCUIApplication()
         app.launch()
-
+        let tablesQuery = app.tables
+        let staticText = tablesQuery.staticTexts["Amit Shah"]
+        staticText.tap()
+        let contactsContactsdetailsviewNavigationBar = app.navigationBars["Contacts.ContactsDetailsView"]
+        contactsContactsdetailsviewNavigationBar.buttons["Edit"].tap()
+        let textField = tablesQuery.cells.containing(.staticText, identifier:"First Name").children(matching: .textField).element
+        textField.tap()
+        textField.clearText(andReplaceWith: updatedFirstName)
+        let textField2 = tablesQuery.cells.containing(.staticText, identifier:"Last Name").children(matching: .textField).element
+        textField2.tap()
+        textField2.clearText(andReplaceWith: "Shah")
+        let textField3 = tablesQuery.cells.containing(.staticText, identifier:"Email").children(matching: .textField).element
+        textField3.tap()
+        textField3.clearText(andReplaceWith: "amit.shah@gmail.com")
+        let textField4 = tablesQuery.cells.containing(.staticText, identifier:"Phone Number").children(matching: .textField).element
+        textField4.tap()
+        textField4.clearText(andReplaceWith: "9910749550")
+        contactsContactsdetailsviewNavigationBar.buttons["Done"].tap()
+        contactsContactsdetailsviewNavigationBar.buttons["Contact"].tap()
+        XCTAssert(tablesQuery.staticTexts[fullName].exists)
         // Use recording to get started writing UI tests.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
     }
@@ -38,6 +63,26 @@ class ContactsUITests: XCTestCase {
             measure(metrics: [XCTOSSignpostMetric.applicationLaunch]) {
                 XCUIApplication().launch()
             }
+        }
+    }
+}
+
+extension XCUIElement {
+    func clearText(andReplaceWith newText:String? = nil) {
+        tap()
+        press(forDuration: 1.0)
+        var select = XCUIApplication().menuItems["Select All"]
+        if !select.exists {
+            select = XCUIApplication().menuItems["Select"]
+        }
+        if select.waitForExistence(timeout: 0.5), select.exists {
+            select.tap()
+            typeText(String(XCUIKeyboardKey.delete.rawValue))
+        } else {
+            tap()
+        }
+        if let newVal = newText {
+            typeText(newVal)
         }
     }
 }
