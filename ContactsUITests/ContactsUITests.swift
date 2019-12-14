@@ -11,50 +11,70 @@ import XCTest
 
 class ContactsUITests: XCTestCase {
 
+    var app: XCUIApplication? = nil
+    
     override func setUp() {
         continueAfterFailure = false
+        app = XCUIApplication()
+        app?.launch()
     }
 
     override func tearDown() {
 
     }
     
-    func testChangeFavoriteContactStatus() {
+    func testChangeContactFavoriteStatus() {
         
     }
     
     func testCreateContactInformation() {
-        
+        let updatedFirstName = "Amit"
+        let updatedLastName = "Shah"
+        let fullName = "\(updatedFirstName) \(updatedLastName)"
+        XCUIApplication().navigationBars["Contact"].buttons["Add"].tap()
+        let contactsContactsdetailsviewNavigationBar = app?.navigationBars["Contacts.ContactsDetailsView"]
+        let tablesQuery = app?.tables
+        let textField = tablesQuery?.cells.containing(.staticText, identifier:"First Name").children(matching: .textField).element
+        textField?.tap()
+        textField?.clearText(andReplaceWith: updatedFirstName)
+        let textField2 = tablesQuery?.cells.containing(.staticText, identifier:"Last Name").children(matching: .textField).element
+        textField2?.tap()
+        textField2?.clearText(andReplaceWith: "Shah")
+        let textField3 = tablesQuery?.cells.containing(.staticText, identifier:"Email").children(matching: .textField).element
+        textField3?.tap()
+        textField3?.clearText(andReplaceWith: "amit.shah@gmail.com")
+        let textField4 = tablesQuery?.cells.containing(.staticText, identifier:"Phone Number").children(matching: .textField).element
+        textField4?.tap()
+        textField4?.clearText(andReplaceWith: "9910749550")
+        contactsContactsdetailsviewNavigationBar?.buttons["Done"].tap()
+        contactsContactsdetailsviewNavigationBar?.buttons["Contact"].tap()
+        XCTAssert((tablesQuery?.staticTexts[fullName].exists)!)
     }
 
     func testEditContactInformation() {
         let updatedFirstName = "Amit"
         let updatedLastName = "Shah"
         let fullName = "\(updatedFirstName) \(updatedLastName)"
-        let app = XCUIApplication()
-        app.launch()
-        let tablesQuery = app.tables
-        let staticText = tablesQuery.staticTexts["Amit Shah"]
-        staticText.tap()
-        let contactsContactsdetailsviewNavigationBar = app.navigationBars["Contacts.ContactsDetailsView"]
-        contactsContactsdetailsviewNavigationBar.buttons["Edit"].tap()
-        let textField = tablesQuery.cells.containing(.staticText, identifier:"First Name").children(matching: .textField).element
-        textField.tap()
-        textField.clearText(andReplaceWith: updatedFirstName)
-        let textField2 = tablesQuery.cells.containing(.staticText, identifier:"Last Name").children(matching: .textField).element
-        textField2.tap()
-        textField2.clearText(andReplaceWith: "Shah")
-        let textField3 = tablesQuery.cells.containing(.staticText, identifier:"Email").children(matching: .textField).element
-        textField3.tap()
-        textField3.clearText(andReplaceWith: "amit.shah@gmail.com")
-        let textField4 = tablesQuery.cells.containing(.staticText, identifier:"Phone Number").children(matching: .textField).element
-        textField4.tap()
-        textField4.clearText(andReplaceWith: "9910749550")
-        contactsContactsdetailsviewNavigationBar.buttons["Done"].tap()
-        contactsContactsdetailsviewNavigationBar.buttons["Contact"].tap()
-        XCTAssert(tablesQuery.staticTexts[fullName].exists)
-        // Use recording to get started writing UI tests.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+        let tablesQuery = app?.tables
+        let staticText = tablesQuery?.staticTexts["Amit Shah"]
+        staticText?.tap()
+        let contactsContactsdetailsviewNavigationBar = app?.navigationBars["Contacts.ContactsDetailsView"]
+        contactsContactsdetailsviewNavigationBar?.buttons["Edit"].tap()
+        let textField = tablesQuery?.cells.containing(.staticText, identifier:"First Name").children(matching: .textField).element
+        textField?.tap()
+        textField?.clearText(andReplaceWith: updatedFirstName)
+        let textField2 = tablesQuery?.cells.containing(.staticText, identifier:"Last Name").children(matching: .textField).element
+        textField2?.tap()
+        textField2?.clearText(andReplaceWith: "Shah")
+        let textField3 = tablesQuery?.cells.containing(.staticText, identifier:"Email").children(matching: .textField).element
+        textField3?.tap()
+        textField3?.clearText(andReplaceWith: "amit.shah@gmail.com")
+        let textField4 = tablesQuery?.cells.containing(.staticText, identifier:"Phone Number").children(matching: .textField).element
+        textField4?.tap()
+        textField4?.clearText(andReplaceWith: "9910749550")
+        contactsContactsdetailsviewNavigationBar?.buttons["Done"].tap()
+        contactsContactsdetailsviewNavigationBar?.buttons["Contact"].tap()
+        XCTAssert((tablesQuery?.staticTexts[fullName].exists)!)
     }
 
     func testLaunchPerformance() {
