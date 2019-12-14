@@ -20,11 +20,17 @@ class ContactsUITests: XCTestCase {
     }
 
     override func tearDown() {
-
     }
     
     func testChangeContactFavoriteStatus() {
-        
+        let name = "Amit Shah"
+        let tablesQuery = app?.tables
+        tablesQuery?.staticTexts[name].firstMatch.tap()
+        let favoritesButton = tablesQuery?.buttons["favourite button"]
+        let isSelected = favoritesButton?.isSelected
+        favoritesButton?.tap()
+        let isFavourite = favoritesButton?.isSelected
+        XCTAssertFalse(isSelected == isFavourite)
     }
     
     func testCreateContactInformation() {
@@ -56,7 +62,7 @@ class ContactsUITests: XCTestCase {
         let updatedLastName = "Shah"
         let fullName = "\(updatedFirstName) \(updatedLastName)"
         let tablesQuery = app?.tables
-        let staticText = tablesQuery?.staticTexts["Amit Shah"]
+        let staticText = tablesQuery?.staticTexts["Amit Shah"].firstMatch
         staticText?.tap()
         let contactsContactsdetailsviewNavigationBar = app?.navigationBars["Contacts.ContactsDetailsView"]
         contactsContactsdetailsviewNavigationBar?.buttons["Edit"].tap()
@@ -79,7 +85,6 @@ class ContactsUITests: XCTestCase {
 
     func testLaunchPerformance() {
         if #available(macOS 10.15, iOS 13.0, tvOS 13.0, *) {
-            // This measures how long it takes to launch your application.
             measure(metrics: [XCTOSSignpostMetric.applicationLaunch]) {
                 XCUIApplication().launch()
             }

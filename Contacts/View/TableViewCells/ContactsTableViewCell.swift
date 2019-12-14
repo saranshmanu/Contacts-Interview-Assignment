@@ -16,7 +16,13 @@ class ContactsTableViewCell: UITableViewCell {
     
     func configure(contact: Contact) {
         profileNameLabel.text = contact.firstName + " " + contact.lastName
-        favouritesImageView.isHidden = !contact.isFavourite
+        if contact.isFavourite {
+            favouritesImageView.isHidden = false
+            favouritesImageView.accessibilityLabel = "notFavourite"
+        } else {
+            favouritesImageView.isHidden = true
+            favouritesImageView.accessibilityLabel = "isFavourite"
+        }
     }
     
     override func awakeFromNib() {
