@@ -11,7 +11,6 @@
 		951F048223A1582900B21B50 /* TableViewCellIndentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951F048123A1582900B21B50 /* TableViewCellIndentifiers.swift */; };
 		951F048423A1589700B21B50 /* ContactsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951F048323A1589700B21B50 /* ContactsTableViewCell.swift */; };
 		951F048623A1596200B21B50 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951F048523A1596200B21B50 /* Contact.swift */; };
-		9529A69023A353F0002224D9 /* logs.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9529A68F23A353F0002224D9 /* logs.txt */; };
 		9529A69223A3A185002224D9 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9529A69123A3A184002224D9 /* StringExtension.swift */; };
 		9529A69723A3BBF5002224D9 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9529A69623A3BBF5002224D9 /* UIViewControllerExtension.swift */; };
 		9529A69923A41A62002224D9 /* ContactModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9529A69823A41A62002224D9 /* ContactModelTests.swift */; };
@@ -61,7 +60,6 @@
 		951F048123A1582900B21B50 /* TableViewCellIndentifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCellIndentifiers.swift; sourceTree = "<group>"; };
 		951F048323A1589700B21B50 /* ContactsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsTableViewCell.swift; sourceTree = "<group>"; };
 		951F048523A1596200B21B50 /* Contact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
-		9529A68F23A353F0002224D9 /* logs.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = logs.txt; sourceTree = "<group>"; };
 		9529A69123A3A184002224D9 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		9529A69623A3BBF5002224D9 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
 		9529A69823A41A62002224D9 /* ContactModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactModelTests.swift; sourceTree = "<group>"; };
@@ -202,7 +200,6 @@
 				9590B40523A14E2F00971DB0 /* Controller */,
 				9590B40423A14E2800971DB0 /* View */,
 				9590B3E023A1223B00971DB0 /* Info.plist */,
-				9529A68F23A353F0002224D9 /* logs.txt */,
 			);
 			path = Contacts;
 			sourceTree = "<group>";
@@ -387,7 +384,6 @@
 				9590B40D23A151CE00971DB0 /* Colors.xcassets in Resources */,
 				9590B3DC23A1223B00971DB0 /* Assets.xcassets in Resources */,
 				9590B3DA23A1223600971DB0 /* Main.storyboard in Resources */,
-				9529A69023A353F0002224D9 /* logs.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
