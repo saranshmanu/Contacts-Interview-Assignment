@@ -11,7 +11,7 @@
 		951F048223A1582900B21B50 /* TableViewCellIndentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951F048123A1582900B21B50 /* TableViewCellIndentifiers.swift */; };
 		951F048423A1589700B21B50 /* ContactsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951F048323A1589700B21B50 /* ContactsTableViewCell.swift */; };
 		951F048623A1596200B21B50 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951F048523A1596200B21B50 /* Contact.swift */; };
-		9529A69223A3A185002224D9 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9529A69123A3A184002224D9 /* StringExtension.swift */; };
+		9529A69223A3A185002224D9 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9529A69123A3A184002224D9 /* String+Extension.swift */; };
 		9529A69723A3BBF5002224D9 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9529A69623A3BBF5002224D9 /* UIViewController+Extension.swift */; };
 		9529A69923A41A62002224D9 /* ContactModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9529A69823A41A62002224D9 /* ContactModelTests.swift */; };
 		95889B0423A18668003E2348 /* ContactAPINetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95889B0323A18668003E2348 /* ContactAPINetworkService.swift */; };
@@ -32,6 +32,7 @@
 		95EBC7AB23C0CC110046A625 /* ContactsDetailsViewController+UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95EBC7AA23C0CC110046A625 /* ContactsDetailsViewController+UITableView.swift */; };
 		95EBC7AD23C0D04A0046A625 /* ContactsDetailsViewController+ContactsDetailsHeaderTableViewCellDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95EBC7AC23C0D04A0046A625 /* ContactsDetailsViewController+ContactsDetailsHeaderTableViewCellDelegate.swift */; };
 		95EBC7AF23C0D1030046A625 /* ContactsDetailsViewController+ContactsDetailsFieldTableViewCellDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95EBC7AE23C0D1030046A625 /* ContactsDetailsViewController+ContactsDetailsFieldTableViewCellDelegate.swift */; };
+		95EBC7B323C0D2350046A625 /* ContactsListViewController+UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95EBC7B223C0D2350046A625 /* ContactsListViewController+UITableView.swift */; };
 		C4AEC60715CB0B7EE437C9AB /* Pods_Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14C7B24CA62E08C3BFF0095F /* Pods_Contacts.framework */; };
 		E8632628C2A1D9D93073FF5A /* Pods_Contacts_ContactsUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D5A5F83A580145F67BCC4D7 /* Pods_Contacts_ContactsUITests.framework */; };
 /* End PBXBuildFile section */
@@ -63,7 +64,7 @@
 		951F048123A1582900B21B50 /* TableViewCellIndentifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCellIndentifiers.swift; sourceTree = "<group>"; };
 		951F048323A1589700B21B50 /* ContactsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsTableViewCell.swift; sourceTree = "<group>"; };
 		951F048523A1596200B21B50 /* Contact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
-		9529A69123A3A184002224D9 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
+		9529A69123A3A184002224D9 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		9529A69623A3BBF5002224D9 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		9529A69823A41A62002224D9 /* ContactModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactModelTests.swift; sourceTree = "<group>"; };
 		95889B0323A18668003E2348 /* ContactAPINetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactAPINetworkService.swift; sourceTree = "<group>"; };
@@ -90,6 +91,7 @@
 		95EBC7AA23C0CC110046A625 /* ContactsDetailsViewController+UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContactsDetailsViewController+UITableView.swift"; sourceTree = "<group>"; };
 		95EBC7AC23C0D04A0046A625 /* ContactsDetailsViewController+ContactsDetailsHeaderTableViewCellDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContactsDetailsViewController+ContactsDetailsHeaderTableViewCellDelegate.swift"; sourceTree = "<group>"; };
 		95EBC7AE23C0D1030046A625 /* ContactsDetailsViewController+ContactsDetailsFieldTableViewCellDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContactsDetailsViewController+ContactsDetailsFieldTableViewCellDelegate.swift"; sourceTree = "<group>"; };
+		95EBC7B223C0D2350046A625 /* ContactsListViewController+UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContactsListViewController+UITableView.swift"; sourceTree = "<group>"; };
 		CC8D7AA052B6B8A7EA91B29B /* Pods-Contacts.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Contacts.release.xcconfig"; path = "Target Support Files/Pods-Contacts/Pods-Contacts.release.xcconfig"; sourceTree = "<group>"; };
 		FE8BA311A25607059051073B /* Pods-Contacts-ContactsUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Contacts-ContactsUITests.release.xcconfig"; path = "Target Support Files/Pods-Contacts-ContactsUITests/Pods-Contacts-ContactsUITests.release.xcconfig"; sourceTree = "<group>"; };
 		FECC3DC5FD544B1ED693E8B8 /* Pods-Contacts-ContactsUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Contacts-ContactsUITests.debug.xcconfig"; path = "Target Support Files/Pods-Contacts-ContactsUITests/Pods-Contacts-ContactsUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -271,7 +273,7 @@
 		9590B40923A150F400971DB0 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				9529A69123A3A184002224D9 /* StringExtension.swift */,
+				9529A69123A3A184002224D9 /* String+Extension.swift */,
 				9529A69623A3BBF5002224D9 /* UIViewController+Extension.swift */,
 			);
 			path = Extensions;
@@ -292,6 +294,7 @@
 			isa = PBXGroup;
 			children = (
 				9590B3D623A1223600971DB0 /* ContactsListViewController.swift */,
+				95EBC7B223C0D2350046A625 /* ContactsListViewController+UITableView.swift */,
 			);
 			path = ContactsListViewController;
 			sourceTree = "<group>";
@@ -539,8 +542,9 @@
 				95889B0E23A26749003E2348 /* ContactsDetailsHeaderTableViewCell.swift in Sources */,
 				951F048423A1589700B21B50 /* ContactsTableViewCell.swift in Sources */,
 				9590B40323A126C800971DB0 /* NetworkManager.swift in Sources */,
+				95EBC7B323C0D2350046A625 /* ContactsListViewController+UITableView.swift in Sources */,
 				95889B0A23A26416003E2348 /* ContactsDetailsViewController.swift in Sources */,
-				9529A69223A3A185002224D9 /* StringExtension.swift in Sources */,
+				9529A69223A3A185002224D9 /* String+Extension.swift in Sources */,
 				951F048223A1582900B21B50 /* TableViewCellIndentifiers.swift in Sources */,
 				9590B3D723A1223600971DB0 /* ContactsListViewController.swift in Sources */,
 				9590B3D323A1223600971DB0 /* AppDelegate.swift in Sources */,

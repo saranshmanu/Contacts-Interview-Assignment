@@ -6,8 +6,8 @@
 //  Copyright © 2020 Saransh Mittal. All rights reserved.
 //
 
-import Foundation
-
+import UIKit
+import MessageUI
 
 extension ContactsDetailsViewController: ContactsDetailsHeaderTableViewCellDelegate, MFMailComposeViewControllerDelegate, MFMessageComposeViewControllerDelegate {
     func performCall(contact: Contact) {
