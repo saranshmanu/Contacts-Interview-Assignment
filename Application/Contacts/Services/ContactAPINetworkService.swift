@@ -35,7 +35,7 @@ class ContactAPINetworkService {
     // get all contact list from the server
     func refreshContactDetails(completion: @escaping (Any?) -> ()) {
         ContactAPINetworkService.refreshStatus = .starting
-        NetworkManager().request(service: .getContact) { (error, result) in
+        NetworkManager().request(service: .getContactList) { (error, result) in
             if let data: [NSDictionary] = result as? [NSDictionary] {
                 self.parseContactList(result: data) { result in
                     let contactList = result as! [Contact]
@@ -58,10 +58,10 @@ class ContactAPINetworkService {
             getContactDetails(uuid: uuid) { (error, response) in
                 if let contact: Contact = response as? Contact {
                     contacts.append(contact)
-                    counter = counter + 1
-                    if counter == result.count {
-                        completion(contacts)
-                    }
+                }
+                counter = counter + 1
+                if counter == result.count {
+                    completion(contacts)
                 }
             }
         }
@@ -87,7 +87,6 @@ class ContactAPINetworkService {
         let query = realm.objects(Contact.self).filter("uuid == \(uuid)").first
         try! realm.write {
             query?.isFavourite = status
-            
         }
         let data: Contact = query!
         if ContactAPINetworkService.refreshStatus == .starting {

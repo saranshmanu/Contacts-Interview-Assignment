@@ -49,9 +49,9 @@ class ContactsDetailsHeaderTableViewCell: UITableViewCell {
         delegate?.performActivity(activity: .message)
     }
     
-    func configure(name: String, isFavourite: Bool, mode: ContactsDetailsMode) {
-        profileUserNameLabel.text = name
-        isFavourite ?
+    func configure(contact: Contact, mode: ContactsDetailsMode) {
+        profileUserNameLabel.text = contact.firstName + " " + contact.lastName
+        contact.isFavourite ?
             (favoriteButton.isSelected = true) :
             (favoriteButton.isSelected = false)
         switch mode {
@@ -70,6 +70,7 @@ class ContactsDetailsHeaderTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.selectionStyle = .none
         profileImageBackgroundView.layer.cornerRadius = profileImageBackgroundView.frame.size.width / 2
         favoriteButton.setImage(UIImage.init(named: "favourite_button_selected"), for: .selected)
         favoriteButton.setImage(UIImage.init(named: "favourite_button"), for: .normal)

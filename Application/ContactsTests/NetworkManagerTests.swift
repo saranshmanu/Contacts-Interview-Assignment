@@ -106,7 +106,7 @@ class NetworkManagerTests: XCTestCase {
     }
     
     func testAddToFavoriteContactSuccessReturnsUpdatedContact() {
-        let mockUUID = 14438
+        let mockUUID = 15283
         let contactsExpectation = expectation(description: "Add contact to favorites")
         var orignalContactsResponse = Contact()
         var updatedContactsResponse = Contact()

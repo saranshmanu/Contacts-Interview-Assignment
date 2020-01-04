@@ -1,5 +1,5 @@
 //
-//  ContactsViewController.swift
+//  ContactsListViewController.swift
 //  Contacts
 //
 //  Created by Saransh Mittal on 11/12/19.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ContactsViewController: UIViewController {
+class ContactsListViewController: UIViewController {
     
     @IBAction func addContactsAction(_ sender: Any) {
         self.performSegue(withIdentifier: "AddContactSegue", sender: self)
@@ -91,7 +91,7 @@ class ContactsViewController: UIViewController {
     }
 }
 
-extension ContactsViewController: UITableViewDelegate, UITableViewDataSource {
+extension ContactsListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let key = contactsSectionTitles[section]
         if let flag = contactsDictionary[key] {

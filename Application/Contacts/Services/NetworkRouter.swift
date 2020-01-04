@@ -10,7 +10,7 @@ import Foundation
 import Alamofire
 
 enum Service: Int {
-    case getContact = 0
+    case getContactList = 0
     case getContactDetails = 1
     case postContactDetails = 2
     case putContactDetails = 3

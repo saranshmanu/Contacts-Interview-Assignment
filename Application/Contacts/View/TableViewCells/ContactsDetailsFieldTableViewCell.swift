@@ -24,10 +24,10 @@ class ContactsDetailsFieldTableViewCell: UITableViewCell, UITextFieldDelegate {
         delegate?.updateChangedValue(data: data, type: type)
     }
     
-    func configure(type: String, data: String, mode: ContactsDetailsMode, placeholder: String) {
-        detailTextField.text = data
-        detailTypeLabel.text = type
-        detailTextField.placeholder = placeholder
+    func configure(mode: ContactsDetailsMode, contactField: NSDictionary) {
+        detailTextField.text = contactField["data"] as? String
+        detailTypeLabel.text = contactField["type"] as? String
+        detailTextField.placeholder = contactField["placeholder"] as? String
         if mode == .normal {
             detailTextField.isUserInteractionEnabled = false
             detailTypeLabel.isUserInteractionEnabled = false
@@ -39,6 +39,7 @@ class ContactsDetailsFieldTableViewCell: UITableViewCell, UITextFieldDelegate {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.selectionStyle = .none
         detailTextField.delegate = self
     }
 
