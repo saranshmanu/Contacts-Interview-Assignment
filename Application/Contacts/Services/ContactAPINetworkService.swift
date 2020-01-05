@@ -9,58 +9,51 @@
 import Foundation
 import RealmSwift
 
+protocol ContactAPINetworkServiceProtocol {
+    func refreshContactList()
+}
+
 class ContactAPINetworkService {
     
-    private enum NetworkStatus: String {
-        case starting = "starting"
-        case completed = "completed"
-    }
-
-    private static var contactUpdateBuffer = [Contact]()
-    private static var refreshStatus: NetworkStatus = .completed {
-        didSet {
-            if refreshStatus == .completed && !contactUpdateBuffer.isEmpty {
-                let updatedContacts = ContactAPINetworkService.contactUpdateBuffer
-                for flag in updatedContacts {
-                    ContactAPINetworkService().updateContactDetails(data: flag, completion: { (response) in
-                        if let _: Contact = response as? Contact {
-                            // successfully updated contact
-                        }
-                    })
-                }
-            }
-        }
-    }
+    var delegate: ContactAPINetworkServiceProtocol?
+    
     private func parseContactsList(result: [NSDictionary], completion: @escaping (Any?) -> ()) {
         var contacts = [Contact]()
         var counter = 0
+        let dispatchGroup = DispatchGroup()
+        let dispatchQueue = DispatchQueue(label: "ALAMOFIRE_REQUEST")
         for contact in result {
-            let uuid = contact["id"] as! Int
-            getContactDetails(uuid: uuid) { (response) in
-                if let contact: Contact = response as? Contact {
-                    contacts.append(contact)
+            dispatchQueue.async {
+                let uuid = contact["id"] as! Int
+                dispatchGroup.enter()
+                self.getContactDetails(uuid: uuid) { (response) in
+                    if let contact: Contact = response as? Contact {
+                        DispatchQueue.main.async {
+                            self.saveData(contactList: [contact])
+                            self.delegate?.refreshContactList()
+                        }
+                        contacts.append(contact)
+                    }
+                    counter = counter + 1
+                    dispatchGroup.leave()
+                    if counter == result.count {
+                        completion(contacts)
+                    }
                 }
-                counter = counter + 1
-                if counter == result.count {
-                    completion(contacts)
-                }
+                dispatchGroup.wait(timeout: .distantFuture)
             }
-            usleep(50000)
         }
     }
     // get all contact list from the server
     func getContactsList(completion: @escaping (Any?) -> ()) {
-        ContactAPINetworkService.refreshStatus = .starting
         NetworkManager().request(service: .getContactList) { (error, result) in
             if let data: [NSDictionary] = result as? [NSDictionary] {
                 self.parseContactsList(result: data) { result in
                     let contactList = result as! [Contact]
                     self.saveData(contactList: contactList)
-                    ContactAPINetworkService.refreshStatus = .completed
                     completion(contactList)
                 }
             } else {
-                ContactAPINetworkService.refreshStatus = .completed
                 completion(nil)
             }
         }
@@ -74,6 +67,7 @@ class ContactAPINetworkService {
                 let contact = self.parseContactJSON(contact: data)
                 completion(contact)
             } else {
+                print("Saransh")
                 completion(nil)
             }
         }
@@ -87,15 +81,11 @@ class ContactAPINetworkService {
         }
         if query == nil { completion(nil) }
         let data = query!
-        if ContactAPINetworkService.refreshStatus == .starting {
-            ContactAPINetworkService.contactUpdateBuffer.append(data)
-        } else {
-            self.updateContact(data: data) { (response) in
-                if response != nil {
-                    completion(response)
-                } else {
-                    completion(nil)
-                }
+        self.updateContact(data: data) { (response) in
+            if response != nil {
+                completion(response)
+            } else {
+                completion(nil)
             }
         }
     }
@@ -110,15 +100,11 @@ class ContactAPINetworkService {
             query?.phoneNumber = data.phoneNumber
         }
         if query == nil { completion(nil) }
-        if ContactAPINetworkService.refreshStatus == .starting {
-            ContactAPINetworkService.contactUpdateBuffer.append(data)
-        } else {
-            self.updateContact(data: data) { (response) in
-                if response != nil {
-                    completion(response)
-                } else {
-                    completion(nil)
-                }
+        self.updateContact(data: data) { (response) in
+            if response != nil {
+                completion(response)
+            } else {
+                completion(nil)
             }
         }
     }
@@ -143,6 +129,7 @@ class ContactAPINetworkService {
                 if let data: NSDictionary = result as? NSDictionary {
                     let contact = self.parseContactJSON(contact: data)
                     self.saveData(contactList: [contact])
+                    self.delegate?.refreshContactList()
                     completion(contact)
                 }
             } else {

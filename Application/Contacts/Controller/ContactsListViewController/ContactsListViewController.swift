@@ -22,24 +22,20 @@ class ContactsListViewController: UIViewController {
     var contactsResultService: ContactAPINetworkService?
     var refreshControl: UIRefreshControl!
     
-    func refresh(status: Bool) {
-        if status == true {
-            createTableSectionIndex()
-            tableView.reloadData()
-            tableView.beginUpdates()
-            tableView.endUpdates()
-        }
-        refreshControl.endRefreshing()
+    func refresh() {
+        createTableSectionIndex()
+        tableView.reloadData()
+        tableView.beginUpdates()
+        tableView.endUpdates()
     }
     
     @objc func fetchData() {
         contactsResultService?.getContactsList(completion: { response in
             if let _: [Contact] = response as? [Contact] {
-                self.refresh(status: true)
-            } else {
-                self.refresh(status: false)
+                self.refresh()
             }
         })
+        refreshControl.endRefreshing()
     }
     
     func initTableView() {
@@ -68,11 +64,16 @@ class ContactsListViewController: UIViewController {
         contactsSectionTitles = contactsSectionTitles.sorted(by: { $0 < $1 })
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        refresh()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         contactsResultService = ContactAPINetworkService()
+        contactsResultService?.delegate = self
         initTableView()
-        refresh(status: true)
+        refresh()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -84,5 +85,12 @@ class ContactsListViewController: UIViewController {
             contactsDetailsViewController.contact = Contact()
             contactsDetailsViewController.mode = .adding
         }
+    }
+}
+
+extension ContactsListViewController: ContactAPINetworkServiceProtocol {
+    func refreshContactList() {
+        createTableSectionIndex()
+        tableView.reloadData()
     }
 }

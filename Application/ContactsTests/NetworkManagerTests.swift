@@ -23,7 +23,7 @@ class NetworkManagerTests: XCTestCase {
                 contactsExpectation.fulfill()
             }
         })
-        waitForExpectations(timeout: 220) { (error) in
+        waitForExpectations(timeout: 1000) { (error) in
             XCTAssertNotNil(contactsResponse)
         }
     }
