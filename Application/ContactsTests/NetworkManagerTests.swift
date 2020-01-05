@@ -31,7 +31,7 @@ class NetworkManagerTests: XCTestCase {
     func testGetContactDetailsSuccessReturnsContact() {
         let contactsExpectation = expectation(description: "Get contact detail for UUID")
         var contactsResponse: Contact?
-        contactsServerAPI?.getContactDetails(uuid: 13446) { (error, result) in
+        contactsServerAPI?.getContactDetails(uuid: 13446) { result in
             if let contact: Contact = result as? Contact {
                 contactsResponse = contact
                 contactsExpectation.fulfill()
@@ -69,7 +69,7 @@ class NetworkManagerTests: XCTestCase {
         contactsServerAPI?.createContactDetails(data: mockData) { (response) in
             if let contact: Contact = response as? Contact {
                 mockData.uuid = contact.uuid
-                self.contactsServerAPI?.getContactDetails(uuid: contact.uuid) { (error, result) in
+                self.contactsServerAPI?.getContactDetails(uuid: contact.uuid) { result in
                     if let data: Contact = result as? Contact {
                         contactsResponse = data
                         contactsExpectation.fulfill()
@@ -89,9 +89,9 @@ class NetworkManagerTests: XCTestCase {
         mockData.uuid = mockUUID
         let contactsExpectation = expectation(description: "Update contact information")
         var contactsResponse = Contact()
-        contactsServerAPI?.updateContactDetails(data: mockData) { (response) in
+        contactsServerAPI?.updateContactDetails(data: mockData) { response in
             if let _: Contact = response as? Contact {
-                self.contactsServerAPI?.getContactDetails(uuid: mockUUID) { (error, result) in
+                self.contactsServerAPI?.getContactDetails(uuid: mockUUID) { result in
                     if let data: Contact = result as? Contact {
                         contactsResponse = data
                         contactsExpectation.fulfill()
@@ -110,7 +110,7 @@ class NetworkManagerTests: XCTestCase {
         let contactsExpectation = expectation(description: "Add contact to favorites")
         var orignalContactsResponse = Contact()
         var updatedContactsResponse = Contact()
-        contactsServerAPI?.getContactDetails(uuid: mockUUID) { (error, result) in
+        contactsServerAPI?.getContactDetails(uuid: mockUUID) { result in
             if let data: Contact = result as? Contact {
                 orignalContactsResponse = data
                 self.contactsServerAPI?.updateContactFavoriteStatus(to: !orignalContactsResponse.isFavourite, uuid: orignalContactsResponse.uuid, completion: { response in

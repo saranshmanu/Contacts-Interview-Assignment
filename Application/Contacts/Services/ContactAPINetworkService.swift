@@ -36,7 +36,7 @@ class ContactAPINetworkService {
         var counter = 0
         for contact in result {
             let uuid = contact["id"] as! Int
-            getContactDetails(uuid: uuid) { (error, response) in
+            getContactDetails(uuid: uuid) { (response) in
                 if let contact: Contact = response as? Contact {
                     contacts.append(contact)
                 }
@@ -45,6 +45,7 @@ class ContactAPINetworkService {
                     completion(contacts)
                 }
             }
+            usleep(50000)
         }
     }
     // get all contact list from the server
@@ -65,15 +66,16 @@ class ContactAPINetworkService {
         }
     }
     // get contact information with UUID from the server
-    func getContactDetails(uuid: Int, completion: @escaping (Bool, Any?) -> ()) {
+    func getContactDetails(uuid: Int, completion: @escaping (Any?) -> ()) {
         let server = NetworkManager()
         server.uuid = uuid
         server.request(service: .getContactDetails) { (error, result) in
             if let data: NSDictionary = result as? NSDictionary {
                 let contact = self.parseContactJSON(contact: data)
-                completion(false, contact)
+                completion(contact)
             } else {
-                completion(true, nil)
+                print("Failed to get contact details")
+                completion(nil)
             }
         }
     }
