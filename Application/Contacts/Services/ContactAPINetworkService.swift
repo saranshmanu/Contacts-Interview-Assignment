@@ -74,7 +74,6 @@ class ContactAPINetworkService {
                 let contact = self.parseContactJSON(contact: data)
                 completion(contact)
             } else {
-                print("Failed to get contact details")
                 completion(nil)
             }
         }
