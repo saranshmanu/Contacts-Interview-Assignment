@@ -31,26 +31,7 @@ class ContactAPINetworkService {
             }
         }
     }
-    
-    // get all contact list from the server
-    func refreshContactDetails(completion: @escaping (Any?) -> ()) {
-        ContactAPINetworkService.refreshStatus = .starting
-        NetworkManager().request(service: .getContactList) { (error, result) in
-            if let data: [NSDictionary] = result as? [NSDictionary] {
-                self.parseContactList(result: data) { result in
-                    let contactList = result as! [Contact]
-                    self.saveData(contactList: contactList)
-                    ContactAPINetworkService.refreshStatus = .completed
-                    completion(contactList)
-                }
-            } else {
-                ContactAPINetworkService.refreshStatus = .completed
-                completion(nil)
-            }
-        }
-    }
-    
-    private func parseContactList(result: [NSDictionary], completion: @escaping (Any?) -> ()) {
+    private func parseContactsList(result: [NSDictionary], completion: @escaping (Any?) -> ()) {
         var contacts = [Contact]()
         var counter = 0
         for contact in result {
@@ -66,7 +47,23 @@ class ContactAPINetworkService {
             }
         }
     }
-    
+    // get all contact list from the server
+    func getContactsList(completion: @escaping (Any?) -> ()) {
+        ContactAPINetworkService.refreshStatus = .starting
+        NetworkManager().request(service: .getContactList) { (error, result) in
+            if let data: [NSDictionary] = result as? [NSDictionary] {
+                self.parseContactsList(result: data) { result in
+                    let contactList = result as! [Contact]
+                    self.saveData(contactList: contactList)
+                    ContactAPINetworkService.refreshStatus = .completed
+                    completion(contactList)
+                }
+            } else {
+                ContactAPINetworkService.refreshStatus = .completed
+                completion(nil)
+            }
+        }
+    }
     // get contact information with UUID from the server
     func getContactDetails(uuid: Int, completion: @escaping (Bool, Any?) -> ()) {
         let server = NetworkManager()
@@ -80,7 +77,6 @@ class ContactAPINetworkService {
             }
         }
     }
-    
     // update the contact favourite statust
     func updateContactFavoriteStatus(to status: Bool, uuid: Int, completion: @escaping (Any?) -> ()) {
         let realm = try! Realm()
@@ -93,21 +89,15 @@ class ContactAPINetworkService {
         if ContactAPINetworkService.refreshStatus == .starting {
             ContactAPINetworkService.contactUpdateBuffer.append(data)
         } else {
-            let server = NetworkManager()
-            server.uuid = uuid
-            server.request(service: .putContactDetails, parameters: createContactJSON(data: data)) { (error, result) in
-                if error == false {
-                    if let contact: NSDictionary = result as? NSDictionary {
-                        let response = self.parseContactJSON(contact: contact)
-                        completion(response)
-                    }
+            self.updateContact(data: data) { (response) in
+                if response != nil {
+                    completion(response)
                 } else {
                     completion(nil)
                 }
             }
         }
     }
-    
     // update the new contact information
     func updateContactDetails(data: Contact, completion: @escaping (Any?) -> ()) {
         let realm = try! Realm()
@@ -122,21 +112,29 @@ class ContactAPINetworkService {
         if ContactAPINetworkService.refreshStatus == .starting {
             ContactAPINetworkService.contactUpdateBuffer.append(data)
         } else {
-            let server = NetworkManager()
-            server.uuid = data.uuid
-            server.request(service: .putContactDetails, parameters: createContactJSON(data: data)) { (error, result) in
-                if error == false {
-                    if let contact: NSDictionary = result as? NSDictionary {
-                        let response = self.parseContactJSON(contact: contact)
-                        completion(response)
-                    }
+            self.updateContact(data: data) { (response) in
+                if response != nil {
+                    completion(response)
                 } else {
                     completion(nil)
                 }
             }
         }
     }
-    
+    func updateContact(data: Contact, completion: @escaping (Any?) -> ()) {
+        let server = NetworkManager()
+        server.uuid = data.uuid
+        server.request(service: .putContactDetails, parameters: createContactJSON(data: data)) { (error, result) in
+            if error == false {
+                if let contact: NSDictionary = result as? NSDictionary {
+                    let response = self.parseContactJSON(contact: contact)
+                    completion(response)
+                }
+            } else {
+                completion(nil)
+            }
+        }
+    }
     // create a new contact
     func createContactDetails(data: Contact, completion: @escaping (Any?) -> ()) {
         NetworkManager().request(service: .postContactDetails, parameters: createContactJSON(data: data)) { (error, result) in
@@ -151,30 +149,16 @@ class ContactAPINetworkService {
             }
         }
     }
-    
     func parseContactJSON(contact: NSDictionary) -> Contact {
         let flag = Contact()
-        if let uuid: Int = contact["id"] as? Int {
-            flag.uuid = uuid
-        }
-        if let phoneNumber: String = contact["phone_number"] as? String {
-            flag.phoneNumber = phoneNumber
-        }
-        if let firstName: String = contact["first_name"] as? String {
-            flag.firstName = firstName
-        }
-        if let lastName: String = contact["last_name"] as? String {
-            flag.lastName = lastName
-        }
-        if let isFavourite: Bool = contact["favorite"] as? Bool {
-            flag.isFavourite = isFavourite
-        }
-        if let email: String = contact["email"] as? String {
-            flag.email = email
-        }
+        if let uuid: Int            = contact["id"] as? Int { flag.uuid = uuid }
+        if let phoneNumber: String  = contact["phone_number"] as? String { flag.phoneNumber = phoneNumber }
+        if let firstName: String    = contact["first_name"] as? String { flag.firstName = firstName }
+        if let lastName: String     = contact["last_name"] as? String { flag.lastName = lastName }
+        if let isFavourite: Bool    = contact["favorite"] as? Bool { flag.isFavourite = isFavourite }
+        if let email: String        = contact["email"] as? String { flag.email = email }
         return flag
     }
-    
     func createContactJSON(data: Contact) -> [String: Any] {
         return [
             "first_name": data.firstName as String,
@@ -184,7 +168,6 @@ class ContactAPINetworkService {
             "email": data.email as String
         ] as [String : Any]
     }
-    
     func getData() -> [Contact] {
         let realm = try! Realm()
         let query = realm.objects(Contact.self)
@@ -194,13 +177,11 @@ class ContactAPINetworkService {
         }
         return contacts
     }
-    
     func getData(with uuid: Int) -> Contact {
         let realm = try! Realm()
         let query = realm.objects(Contact.self).filter("uuid == \(uuid)").first!
         return query
     }
-    
     func saveData(contactList: [Contact]) {
         let realm = try! Realm()
         try! realm.write {
@@ -209,7 +190,6 @@ class ContactAPINetworkService {
             }
         }
     }
-    
     func getRealmFileDirectory() {
         let realm = try! Realm()
         let folderPath = realm.configuration.fileURL!.deletingLastPathComponent().path

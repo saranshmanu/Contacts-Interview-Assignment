@@ -33,7 +33,7 @@ class ContactsListViewController: UIViewController {
     }
     
     @objc func fetchData() {
-        contactsResultService?.refreshContactDetails(completion: { response in
+        contactsResultService?.getContactsList(completion: { response in
             if let _: [Contact] = response as? [Contact] {
                 self.refresh(status: true)
             } else {

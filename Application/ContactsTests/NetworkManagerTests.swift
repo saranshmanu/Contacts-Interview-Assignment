@@ -14,10 +14,10 @@ class NetworkManagerTests: XCTestCase {
     var mockUUID: Int? = nil
     var contactsServerAPI: ContactAPINetworkService? = nil
     
-    func testRefreshContactListSuccessReturnsContactList() {
+    func testGetContactsListSuccessReturnsContactList() {
         let contactsExpectation = expectation(description: "Get contact list")
         var contactsResponse: [Contact]?
-        contactsServerAPI?.refreshContactDetails(completion: { result in
+        contactsServerAPI?.getContactsList(completion: { result in
             if let data: [Contact] = result as? [Contact] {
                 contactsResponse = data
                 contactsExpectation.fulfill()
@@ -28,7 +28,7 @@ class NetworkManagerTests: XCTestCase {
         }
     }
     
-    func testGetContactSuccessReturnsContact() {
+    func testGetContactDetailsSuccessReturnsContact() {
         let contactsExpectation = expectation(description: "Get contact detail for UUID")
         var contactsResponse: Contact?
         contactsServerAPI?.getContactDetails(uuid: 13446) { (error, result) in
