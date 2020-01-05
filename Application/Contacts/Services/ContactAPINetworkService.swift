@@ -11,18 +11,18 @@ import RealmSwift
 
 class ContactAPINetworkService {
     
-    enum NetworkStatus: String {
+    private enum NetworkStatus: String {
         case starting = "starting"
         case completed = "completed"
     }
 
-    static var contactUpdateBuffer = [Contact]()
-    static var refreshStatus: NetworkStatus = .completed {
+    private static var contactUpdateBuffer = [Contact]()
+    private static var refreshStatus: NetworkStatus = .completed {
         didSet {
             if refreshStatus == .completed && !contactUpdateBuffer.isEmpty {
                 let updatedContacts = ContactAPINetworkService.contactUpdateBuffer
                 for flag in updatedContacts {
-                    ContactAPINetworkService().updateContactDetails(with: flag.uuid, data: flag, completion: { (response) in
+                    ContactAPINetworkService().updateContactDetails(data: flag, completion: { (response) in
                         if let _: Contact = response as? Contact {
                             // successfully updated contact
                         }
@@ -50,7 +50,7 @@ class ContactAPINetworkService {
         }
     }
     
-    func parseContactList(result: [NSDictionary], completion: @escaping (Any?) -> ()) {
+    private func parseContactList(result: [NSDictionary], completion: @escaping (Any?) -> ()) {
         var contacts = [Contact]()
         var counter = 0
         for contact in result {
@@ -88,7 +88,8 @@ class ContactAPINetworkService {
         try! realm.write {
             query?.isFavourite = status
         }
-        let data: Contact = query!
+        if query == nil { completion(nil) }
+        let data = query!
         if ContactAPINetworkService.refreshStatus == .starting {
             ContactAPINetworkService.contactUpdateBuffer.append(data)
         } else {
@@ -108,15 +109,16 @@ class ContactAPINetworkService {
     }
     
     // update the new contact information
-    func updateContactDetails(with uuid: Int, data: Contact, completion: @escaping (Any?) -> ()) {
+    func updateContactDetails(data: Contact, completion: @escaping (Any?) -> ()) {
         let realm = try! Realm()
-        let query = realm.objects(Contact.self).filter("uuid == \(uuid)").first
+        let query = realm.objects(Contact.self).filter("uuid == \(data.uuid)").first
         try! realm.write {
             query?.firstName = data.firstName
             query?.lastName = data.lastName
             query?.email = data.email
             query?.phoneNumber = data.phoneNumber
         }
+        if query == nil { completion(nil) }
         if ContactAPINetworkService.refreshStatus == .starting {
             ContactAPINetworkService.contactUpdateBuffer.append(data)
         } else {

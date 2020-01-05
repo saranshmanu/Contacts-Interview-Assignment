@@ -77,19 +77,19 @@ class NetworkManagerTests: XCTestCase {
                 }
             }
         }
-        waitForExpectations(timeout: 10) { (error) in
+        waitForExpectations(timeout: 60) { (error) in
             XCTAssertNotNil(contactsResponse)
             XCTAssertTrue(mockData==contactsResponse)
         }
     }
     
     func testUpdateContactDetailsSuccessReturnsUpdatedContact() {
-        let mockUUID = 14438
+        let mockUUID = 15428
         let mockData = getMockContactData()
         mockData.uuid = mockUUID
         let contactsExpectation = expectation(description: "Update contact information")
         var contactsResponse = Contact()
-        contactsServerAPI?.updateContactDetails(with: mockUUID, data: mockData) { (response) in
+        contactsServerAPI?.updateContactDetails(data: mockData) { (response) in
             if let _: Contact = response as? Contact {
                 self.contactsServerAPI?.getContactDetails(uuid: mockUUID) { (error, result) in
                     if let data: Contact = result as? Contact {
@@ -99,14 +99,14 @@ class NetworkManagerTests: XCTestCase {
                 }
             }
         }
-        waitForExpectations(timeout: 10) { (error) in
+        waitForExpectations(timeout: 60) { (error) in
             XCTAssertNotNil(contactsResponse)
             XCTAssertTrue(mockData==contactsResponse)
         }
     }
     
     func testAddToFavoriteContactSuccessReturnsUpdatedContact() {
-        let mockUUID = 15283
+        let mockUUID = 15428
         let contactsExpectation = expectation(description: "Add contact to favorites")
         var orignalContactsResponse = Contact()
         var updatedContactsResponse = Contact()
@@ -122,7 +122,7 @@ class NetworkManagerTests: XCTestCase {
             }
         }
         
-        waitForExpectations(timeout: 10) { (error) in
+        waitForExpectations(timeout: 60) { (error) in
             XCTAssertNotNil(updatedContactsResponse)
             XCTAssertNotNil(orignalContactsResponse)
             XCTAssertFalse(orignalContactsResponse==updatedContactsResponse)
@@ -133,7 +133,7 @@ class NetworkManagerTests: XCTestCase {
         let contactsExpectation = expectation(description: "Parse contact JSON")
         let parsedContact: Contact = (contactsServerAPI?.parseContactJSON(contact: getMockContactJSON()))!
         contactsExpectation.fulfill()
-        waitForExpectations(timeout: 10) { (error) in
+        waitForExpectations(timeout: 60) { (error) in
             XCTAssertNotNil(parsedContact)
             XCTAssertTrue(parsedContact==self.getMockContactData())
             XCTAssertFalse(parsedContact==Contact())
@@ -144,7 +144,7 @@ class NetworkManagerTests: XCTestCase {
         let contactsExpectation = expectation(description: "Parse contact JSON")
         let contactJSON = contactsServerAPI?.createContactJSON(data: getMockContactData())
         contactsExpectation.fulfill()
-        waitForExpectations(timeout: 10) { (error) in
+        waitForExpectations(timeout: 60) { (error) in
             XCTAssertNotNil(contactJSON)
             XCTAssertTrue(self.getMockContactJSON() == contactJSON! as NSDictionary)
         }

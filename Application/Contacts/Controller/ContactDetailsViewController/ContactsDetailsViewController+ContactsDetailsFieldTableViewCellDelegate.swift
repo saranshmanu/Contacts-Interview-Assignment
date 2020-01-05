@@ -16,8 +16,8 @@ extension ContactsDetailsViewController: ContactsDetailsFieldTableViewCellDelega
         initDataFields()
     }
     func updateContactInformation() {
-        ContactAPINetworkService().updateContactDetails(with: newContactInformation!.uuid, data: newContactInformation!, completion: { (response) in })
-        contact = ContactAPINetworkService().getData(with: contact!.uuid)
+        ContactAPINetworkService().updateContactDetails(data: newContactInformation!, completion: { (response) in })
+        self.contact = ContactAPINetworkService().getData(with: contact!.uuid)
         initDataFields()
     }
     func updateChangedValue(data: String, type: String) {

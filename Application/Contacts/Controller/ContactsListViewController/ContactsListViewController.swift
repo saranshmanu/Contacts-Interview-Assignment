@@ -72,11 +72,18 @@ class ContactsListViewController: UIViewController {
         refresh(status: true)
     }
     
+    var isRunningTests: Bool {
+        return ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         contactsResultService = ContactAPINetworkService()
         initTableView()
         refresh(status: true)
+//        if !isRunningTests {
+//            fetchData()
+//        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

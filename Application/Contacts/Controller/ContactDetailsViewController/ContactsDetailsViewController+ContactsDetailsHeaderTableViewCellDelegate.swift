@@ -33,7 +33,7 @@ extension ContactsDetailsViewController: ContactsDetailsHeaderTableViewCellDeleg
     }
     func performMessage(contact: Contact) {
         if (contact.phoneNumber.isEmpty) {
-            self.showAlert(title: "Alert", message: "No email address found. Cannot send the message.")
+            self.showAlert(title: "Alert", message: "No message address found. Cannot send the message.")
             return
         }
         if MFMessageComposeViewController.canSendText() {
