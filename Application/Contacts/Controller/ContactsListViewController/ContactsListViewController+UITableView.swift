@@ -16,9 +16,7 @@ extension ContactsListViewController: UITableViewDelegate, UITableViewDataSource
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let key = contactsSectionTitles[section]
-        if let flag = contactsDictionary[key] {
-            return flag.count
-        }
+        if let flag = contactsDictionary[key] { return flag.count }
         return 0
     }
     

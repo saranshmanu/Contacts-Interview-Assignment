@@ -51,18 +51,18 @@
                                                 </imageView>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstAttribute="trailing" secondItem="431-5g-whb" secondAttribute="trailing" constant="32" id="4Nl-jf-BVM"/>
                                                 <constraint firstItem="gCv-at-ybq" firstAttribute="leading" secondItem="s8q-3L-pis" secondAttribute="leading" constant="16" id="OTK-Gj-kPI"/>
                                                 <constraint firstItem="gCv-at-ybq" firstAttribute="top" secondItem="s8q-3L-pis" secondAttribute="top" constant="12" id="Pmy-pB-CGW"/>
                                                 <constraint firstAttribute="bottom" secondItem="gCv-at-ybq" secondAttribute="bottom" constant="12" id="XVD-Ph-7ay"/>
+                                                <constraint firstItem="431-5g-whb" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="7Sj-7J-2rC" secondAttribute="trailing" priority="10" constant="8" symbolic="YES" id="axk-PU-eht"/>
                                                 <constraint firstItem="7Sj-7J-2rC" firstAttribute="leading" secondItem="gCv-at-ybq" secondAttribute="trailing" constant="16" id="glL-cV-HCf"/>
                                                 <constraint firstItem="431-5g-whb" firstAttribute="centerY" secondItem="s8q-3L-pis" secondAttribute="centerY" id="gqA-0s-vLd"/>
                                                 <constraint firstItem="7Sj-7J-2rC" firstAttribute="centerY" secondItem="s8q-3L-pis" secondAttribute="centerY" id="ibU-Ua-yKv"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="backgroundColor" name="ThemeLightGrey"/>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <outlet property="favouritesImageView" destination="431-5g-whb" id="52Z-gc-tBr"/>
@@ -83,7 +83,7 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" title="Contact" id="sNc-kZ-CWu">
-                        <barButtonItem key="leftBarButtonItem" title="Groups" style="plain" id="hp0-Qy-BGw">
+                        <barButtonItem key="leftBarButtonItem" title="Groups" style="done" id="hp0-Qy-BGw">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="MuB-0X-VR2">
                                 <rect key="frame" x="20" y="7" width="92" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -92,7 +92,7 @@
                                 </state>
                             </button>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" style="plain" systemItem="add" id="hUh-7n-LOc">
+                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="add" id="hUh-7n-LOc">
                             <color key="tintColor" name="ThemeGreen"/>
                             <connections>
                                 <action selector="addContactsAction:" destination="BYZ-38-t0r" id="EWC-rH-iBb"/>
@@ -155,7 +155,7 @@
                                                                 </constraints>
                                                             </view>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Saransh Mittal" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="83n-sG-Jea">
-                                                                <rect key="frame" x="20" y="188" width="374" height="26.5"/>
+                                                                <rect key="frame" x="132.5" y="188" width="149" height="26.5"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="26.5" id="WRA-CO-Zw1"/>
                                                                 </constraints>
@@ -270,8 +270,8 @@
                                                             <constraint firstItem="83n-sG-Jea" firstAttribute="top" secondItem="YDK-Io-Rcz" secondAttribute="bottom" constant="8" id="V11-0c-bAl"/>
                                                             <constraint firstItem="z3h-cC-Pq1" firstAttribute="centerX" secondItem="BJM-bp-3gV" secondAttribute="centerX" id="WBJ-55-ya5"/>
                                                             <constraint firstAttribute="bottom" secondItem="z3h-cC-Pq1" secondAttribute="bottom" constant="19.5" id="YTl-Ch-YWi"/>
-                                                            <constraint firstAttribute="trailing" secondItem="83n-sG-Jea" secondAttribute="trailing" constant="20" id="ZCh-29-4yE"/>
-                                                            <constraint firstItem="83n-sG-Jea" firstAttribute="leading" secondItem="BJM-bp-3gV" secondAttribute="leading" constant="20" id="eMp-Ev-c4s"/>
+                                                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="83n-sG-Jea" secondAttribute="trailing" constant="20" id="ZCh-29-4yE"/>
+                                                            <constraint firstItem="83n-sG-Jea" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="BJM-bp-3gV" secondAttribute="leading" constant="20" id="eMp-Ev-c4s"/>
                                                             <constraint firstItem="83n-sG-Jea" firstAttribute="centerX" secondItem="BJM-bp-3gV" secondAttribute="centerX" id="m4g-wf-9m6"/>
                                                             <constraint firstItem="4JA-ES-q3r" firstAttribute="top" secondItem="BJM-bp-3gV" secondAttribute="top" constant="55" id="qRv-mF-1Gy"/>
                                                             <constraint firstAttribute="trailing" secondItem="4JA-ES-q3r" secondAttribute="trailing" constant="143" id="zP8-iL-4aD"/>
@@ -319,7 +319,7 @@
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="First Name" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XTI-zK-2yd">
                                                     <rect key="frame" x="24" y="19.5" width="103" height="17"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="103" id="qfO-PK-5UC"/>
+                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="103" id="qfO-PK-5UC"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <color key="textColor" name="ThemeGrey"/>

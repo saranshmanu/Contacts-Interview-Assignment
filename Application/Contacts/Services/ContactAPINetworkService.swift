@@ -19,11 +19,13 @@ class ContactAPINetworkService {
     
     private func parseContactsList(result: [NSDictionary], completion: @escaping (Any?) -> ()) {
         var contacts = [Contact]()
-        var counter = 0
+        var contactCounter = 0
+        var flowCounter = 0
         let dispatchGroup = DispatchGroup()
         let dispatchQueue = DispatchQueue(label: "ALAMOFIRE_REQUEST")
         for contact in result {
             dispatchQueue.async {
+                print(Date(), flowCounter)
                 let uuid = contact["id"] as! Int
                 dispatchGroup.enter()
                 self.getContactDetails(uuid: uuid) { (response) in
@@ -34,13 +36,16 @@ class ContactAPINetworkService {
                         }
                         contacts.append(contact)
                     }
-                    counter = counter + 1
+                    contactCounter = contactCounter + 1
                     dispatchGroup.leave()
-                    if counter == result.count {
+                    if contactCounter == result.count {
                         completion(contacts)
                     }
                 }
-                dispatchGroup.wait(timeout: .distantFuture)
+                flowCounter = flowCounter + 1
+                if flowCounter%15 == 0 {
+                    _ = dispatchGroup.wait(timeout: .distantFuture)
+                }
             }
         }
     }
@@ -65,9 +70,10 @@ class ContactAPINetworkService {
         server.request(service: .getContactDetails) { (error, result) in
             if let data: NSDictionary = result as? NSDictionary {
                 let contact = self.parseContactJSON(contact: data)
+                print("^success to get the contact")
                 completion(contact)
             } else {
-                print("Saransh")
+                print("^Failed to get the contact")
                 completion(nil)
             }
         }
