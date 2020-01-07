@@ -55,7 +55,6 @@ class ContactAPINetworkService {
             if let data: [NSDictionary] = result as? [NSDictionary] {
                 self.parseContactsList(result: data) { result in
                     let contactList = result as! [Contact]
-                    self.saveData(contactList: contactList)
                     completion(contactList)
                 }
             } else {

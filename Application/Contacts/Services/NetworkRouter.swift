@@ -31,7 +31,8 @@ class NetworkRouter {
         3: .put
     ] as [Int: HTTPMethod]
     
-    func serverBaseURL() -> String { return "https://gojek-contacts-app.herokuapp.com/" }
+    var serverBaseURL = { return "https://gojek-contacts-app.herokuapp.com/" }
+    
     func getNetworkRoute(service: Service) -> String {
         return serviceURL[service.rawValue]!
     }
